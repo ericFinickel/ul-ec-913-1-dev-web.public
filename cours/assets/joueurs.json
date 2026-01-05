@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "nom": "Mbappé",
+    "prenom": "Kylian",
+    "age": 26,
+    "poste": "Attaquant",
+    "nbBut": 300
+  },
+  {
+    "id": 2,
+    "nom": "Haaland",
+    "prenom": "Erling",
+    "age": 24,
+    "poste": "Attaquant",
+    "nbBut": 250
+  },
+  {
+    "id": 3,
+    "nom": "De Bruyne",
+    "prenom": "Kevin",
+    "age": 33,
+    "poste": "Milieu",
+    "nbBut": 90
+  },
+  {
+    "id": 4,
+    "nom": "Modrić",
+    "prenom": "Luka",
+    "age": 39,
+    "poste": "Milieu",
+    "nbBut": 70
+  },
+  {
+    "id": 5,
+    "nom": "Virgil",
+    "prenom": "van Dijk",
+    "age": 33,
+    "poste": "Défenseur",
+    "nbBut": 40
+  },
+  {
+    "id": 6,
+    "nom": "Salah",
+    "prenom": "Mohamed",
+    "age": 32,
+    "poste": "Attaquant",
+    "nbBut": 250
+  },
+  {
+    "id": 7,
+    "nom": "Kanté",
+    "prenom": "N'Golo",
+    "age": 33,
+    "poste": "Milieu",
+    "nbBut": 20
+  },
+  {
+    "id": 8,
+    "nom": "Bellingham",
+    "prenom": "Jude",
+    "age": 21,
+    "poste": "Milieu",
+    "nbBut": 50
+  },
+  {
+    "id": 9,
+    "nom": "Hakimi",
+    "prenom": "Achraf",
+    "age": 26,
+    "poste": "Défenseur",
+    "nbBut": 35
+  },
+  {
+    "id": 10,
+    "nom": "Ter Stegen",
+    "prenom": "Marc-André",
+    "age": 32,
+    "poste": "Gardien",
+    "nbBut": 0
+  }
+]

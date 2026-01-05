@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Angular</title>
+
+    <link rel="stylesheet" href="../assets/global.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css"
+      id="theme"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github.min.css"
+    />
+
+    <style>
+      .reveal pre code {
+        font-size: 0.9em;
+      }
+
+      section {
+        font-size: 0.7em;
+      }
+    </style>
+
+    <script>
+      class AngularPlanList extends HTMLElement {
+        static get observedAttributes() {
+          return ["completed"];
+        }
+
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" });
+          this.render();
+        }
+
+        attributeChangedCallback() {
+          this.render();
+        }
+
+        get completed() {
+          return Number(this.getAttribute("completed")) || 0;
+        }
+
+        render() {
+          let remaining = this.completed;
+
+          const mark = (label) => {
+            if (remaining > 0) {
+              remaining--;
+              return `${label} <span class="check">✅</span>`;
+            }
+            if (remaining === 0) {
+              remaining--;
+              return `${label} <span class="check">🔄️</span>`;
+            }
+            return label;
+          };
+
+          this.shadowRoot.innerHTML = `
+          <style>
+            :host {
+             text-align: start;
+            }
+
+            .check {
+              font-size: 0.8em;
+              margin-left: 8px;
+              color: green;
+            }
+          </style>
+
+
+              <ol>
+                <li>${mark(
+                  "Création premier projet, cli, structure, fichiers de conf"
+                )}</li>
+
+                <li>Composants
+                  <ul>
+                    <li>${mark("Base")}</li>
+                    <li>${mark("Data binding")}</li>
+                    <li>${mark("Control flow")}</li>
+                    <li>${mark("Les signaux")}</li>
+                    <li>${mark("Input/output")}</li>
+                  </ul>
+                </li>
+
+
+                <li>Services
+                  <ul>
+                    <li>${mark("Base")}</li>
+                    <li>${mark("Http")}</li>
+                    <li>${mark("Intercepteur")}</li>
+                  </ul>
+                </li>
+
+                <li>Routage
+                  <ul>
+                    <li>${mark("Base")}</li>
+                    <li>${mark("Controle d'accès")}</li>
+                  </ul>
+                </li>
+
+
+                <li>${mark("Directives")}</li>
+                <li>${mark("Pipes")}</li>
+
+                <li>${mark("Formulaires")}</li>
+                <li>${mark("Angular material")}</li>
+                <li>${mark("Angular < 21 && 16")}</li>
+
+                <li>Tests unitaires
+                  <ul>
+                    <li>${mark("Kesako")}</li>
+                    <li>${mark("Test de composants, de services")}</li>
+                  </ul>
+                </li>
+              </ol>
+          `;
+        }
+      }
+
+      customElements.define("app-plan", AngularPlanList);
+    </script>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1>Angular</h1>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>C'est quoi Angular ?</h3>
+          <p>
+            Angular est un framework front-end développé par Google pour créer
+            des applications web modernes, robustes et maintenables
+          </p>
+          <ul>
+            <li>Basé sur TypeScript</li>
+            <li>Architecture orientée composants</li>
+            <li>Pensé pour les applications SPA (Single Page Application)</li>
+            <li>Très structuré by design</li>
+            <ul>
+              <li>Très utilisé en contexte professionnel / entreprise</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Angular vs AngularJS</h3>
+
+          <ul>
+            <li>
+              AngularJS :
+              <ul>
+                <li>Crée par Misko Hevery (Google) en 2010</li>
+                <li>Framework JavaScript Google, MVC, two-way data-binding</li>
+              </ul>
+            </li>
+
+            <li>
+              Angular 2+ :
+              <ul>
+                <li>Refonte totale (AngularJS ≠ Angular)</li>
+                <li>Par Misko Hevery + équipe angular en 2016</li>
+                <li>TypeScript, architecture par composants, CLI</li>
+              </ul>
+            </li>
+          </ul>
+          <div
+            style="
+              color: red;
+              border: 3px solid red;
+              border-radius: 50px;
+              margin: 5px;
+              padding: 2px;
+            "
+          >
+            <p>Angular</p>
+            <p>≠</p>
+            <p>AngularJS</p>
+          </div>
+          <p>
+            (Pas le peine de chercher de la doc Angular dans la doc AngularJS)
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Date clé Angular</h3>
+
+          <ul>
+            <li>
+              Angular 2 (2016) à 16 (2023)
+              <ul>
+                <li>montée en maturité (forms et HTTP stabilisés)</li>
+                <li>performances</li>
+                <li>tooling (CLI)</li>
+                <li>Ivy*</li>
+              </ul>
+            </li>
+
+            <li>
+              Angular 16+ (2013) à 21: Baptisé renaissance
+              <ul>
+                <li>Départ du lead dev</li>
+                <li>Signaux (gestion d'état)</li>
+                <li>Perf, DX amélioré (moins de code boilerplate)</li>
+                <li>SSR / hydration simplifiés</li>
+              </ul>
+            </li>
+          </ul>
+
+          <p>A savoir: Du code Angular 2 marche dans un projet Angular 21</p>
+
+          <blockquote style="font-size: 0.6em">
+            *Ivy est le moteur de rendu d'Angular qui compile les composants de
+            façon plus efficace afin de réduire la taille des bundles, améliorer
+            les performances et accélérer la compilation des applications
+          </blockquote>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Version Angular</h3>
+
+          <p>
+            Une version tout les 6 mois (<a
+              href="https://angular.dev/reference/releases#release-schedule"
+              >voir ici</a
+            >)
+          </p>
+          <p><img src="../assets/monté-version.png" /></p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Liens utiles</h3>
+          <ul>
+            <li><a href="https://angular.dev/">Doc officielle</a></li>
+            <li>
+              <a href="https://www.angular.courses/caniuse/features"
+                >Liste des features introduite dans les différentes versions</a
+              >
+            </li>
+            <li>
+              <a href="https://material.angular.dev/">Angular material</a>
+            </li>
+            <li>
+              <a href="https://github.com/angular/angular">Repo Angular</a>
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Angular vs Vue vs React</h3>
+
+          <ul>
+            <li>
+              Angular : framework complet (routing, HTTP, forms intégrés),
+              structurant, idéal pour les grosses applications
+            </li>
+
+            <li>
+              React : bibliothèque orientée composants, très flexible, nécessite
+              des librairies externes (routing, state management)
+            </li>
+
+            <li>
+              Vue : framework progressif, simple à prendre en main, bon
+              compromis entre Angular et React
+            </li>
+
+            <li>
+              Cas d'usage :
+              <ul>
+                <li>Angular : projets structurés, équipes importantes</li>
+                <li>React : produits très dynamiques, écosystème riche</li>
+                <li>Vue : projets rapides, pédagogie, petites équipes</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Choix du cours</h3>
+
+          <ul>
+            <li>Angular 21</li>
+            <ul>
+              <li>Courbe d'apprentissage moins grande</li>
+            </ul>
+            <li>(Quelques notions de "comment c'était avant")</li>
+            <li style="margin-top: 0.9em"><strong>Prérequis</strong></li>
+            <ul>
+              <li>En dev: Node/Npm (ajout de lib, build, start dev...)</li>
+              <li>Typescript</li>
+              <li style="margin: 0.5em 0">
+                <span class="kiki-ultimate">Du CSS</span>
+              </li>
+              <li>
+                Un IDE: vscode, intelij,...
+                <ul>
+                  <li>
+                    Pour les utilisateurs de VSCode installer l'extension
+                    Angular Language Service
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </ul>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.75"
+        >
+          <h3>Plan de cours</h3>
+          <app-plan completed="0"></app-plan>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1>
+            Création premier projet<br />
+            structure<br />
+            fichiers de conf
+          </h1>
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              padding: 0;
+              margin-top: 2em;
+            "
+          >
+            <app-plan completed="0" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Installation Angular CLI</h2>
+          <pre><code class="language-bash">
+npm install -g @angular/cli # -g pour global installation
+ng version
+      </code></pre>
+          <p>
+            la cli constitue l'interface principale pour créer, développer,
+            tester et livrer une application Angular.
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Commandes principales de @angular/cli</h3>
+
+          <table>
+            <tbody>
+              <tr>
+                <td>ng new</td>
+                <td>
+                  crée un nouveau projet Angular avec une configuration initiale
+                  complète
+                </td>
+              </tr>
+              <tr>
+                <td>ng serve</td>
+                <td>
+                  lance un serveur de développement avec rechargement
+                  automatique
+                </td>
+              </tr>
+              <tr>
+                <td>ng build</td>
+                <td>
+                  compile l'application pour le développement ou la production
+                </td>
+              </tr>
+              <tr>
+                <td>ng generate</td>
+                <td>
+                  génère du code standardisé comme composants, services et
+                  routes
+                </td>
+              </tr>
+              <tr>
+                <td>ng test</td>
+                <td>exécute les tests unitaires</td>
+              </tr>
+              <tr>
+                <td>ng lint</td>
+                <td>analyse la qualité et la conformité du code</td>
+              </tr>
+              <tr>
+                <td>ng add</td>
+                <td>
+                  ajoute et configure automatiquement des dépendances Angular
+                  compatibles
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Créer une nouvelle application</h2>
+          <pre><code class="language-bash">
+ng new mon-projet-de-fou-dingue
+cd mon-projet-de-fou-dingue
+npm start
+      </code></pre>
+          <p>
+            Les options classiques qu'on met en place:
+            <img src="../assets/new-projet-angular.png" />
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>TP6</h2>
+          <ol>
+            <li>Installer angular cli en global</li>
+            <li>Créer un nouveau projet angular</li>
+            <li>Installer les dépendances</li>
+            <li>Lancer le serveur de dev + ouvrir l'appli</li>
+            <li>Parcourir les fichiers checker un peu le contenu</li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Structure d'un projet Angular</h2>
+          <pre style="height: 450px"><code class="language-text">
+tp6
+├─ angular.json          // configuration du workspace Angular (build, serve, assets)
+├─ package-lock.json     
+├─ package.json          // dépendances, scripts du projet
+├─ public                // dossier d'assets utilisé dans l'appli
+│  └─ favicon.ico        
+├─ src
+│  ├─ app
+│  │  ├─ app.config.ts   // configuration globale de l'application (providers, router, http)
+│  │  ├─ app.routes.ts   // définition du routage principal
+│  │  ├─ app.ts          // composant racine de l'application
+│  │  ├─ app.html        // template HTML du composant racine
+│  │  ├─ app.css         // styles CSS du composant racine
+│  │  └─ app.spec.ts     // tests unitaires du composant racine
+│  ├─ index.html         // page HTML hôte de l'application Angular
+│  ├─ main.ts            // point d'entrée, bootstrap de l'application
+│  └─ styles.css         // styles globaux partagés de l'application
+├─ tsconfig.app.json     // configuration TypeScript spécifique à l'application
+├─ tsconfig.json         // configuration TypeScript globale du projet
+└─ tsconfig.spec.json    // configuration TypeScript dédiée aux tests
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Bootstrap Angular</h2>
+          <pre><code>
+index.html                       // page hôte Angular
+  ↓ (&lt;app-root&gt;)
+main.ts                          // point d'entrée de l'application, angular n'est pas encore démarré
+                                 // du coup on peut faire des trucs avant le bootstrap
+  ↓ bootstrapApplication(AppComponent, appConfig)  // démarre l'application angular avec :
+          ↓                                                         ↓                        
+app.config.ts                                  +        AppComponent  &lt;app-root&gt;
+// configuration globale de l'application               // composant racine de l'application 
+// (providers, router, http)
+
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Fichiers de configuration TypeScript</h2>
+
+          <p>
+            Angular s'appuie sur plusieurs fichiers tsconfig afin de séparer la
+            configuration TypeScript selon le contexte d'exécution. Cette
+            séparation permet d'optimiser la compilation et d'adapter les règles
+            aux usages spécifiques.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Fichier</th>
+                <th>Rôle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>tsconfig.json</td>
+                <td>
+                  configuration TypeScript globale du projet elle définit les
+                  options communes comme strict, target et module
+                </td>
+              </tr>
+              <tr>
+                <td>tsconfig.app.json</td>
+                <td>
+                  configuration spécifique à l'application utilisée pour la
+                  compilation du code exécuté dans le navigateur
+                </td>
+              </tr>
+              <tr>
+                <td>tsconfig.spec.json</td>
+                <td>
+                  configuration dédiée aux tests unitaires inclut les fichiers
+                  spec et les types nécessaires au framework de test
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            Les fichiers tsconfig.app.json et tsconfig.spec.json étendent
+            tsconfig.json afin d'hériter d'une base commune
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Archi</h3>
+          <img src="../assets/archi_angular.png" alt="" />
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Archi</h3>
+          <p>
+            Angular est basé sur une architecture modulaire et orientée
+            composants. Les principales briques sont :
+          </p>
+          <ul>
+            <li>Composants : unités réutilisables d'interface utilisateur</li>
+            <li>Services : logique métier et partage de données</li>
+            <li>
+              Directives : manipulent le DOM et le comportement des éléments
+            </li>
+            <li>Pipes : transforment les données pour l'affichage</li>
+            <li>Routage : navigation entre différentes vues</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Les composants Angular
+          </h1>
+          <div style="display: flex; justify-content: center">
+            <app-plan completed="1" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Composants - Base</h2>
+          <ul>
+            <li>Bloc fondamental de toute application Angular</li>
+            <li>C'est ce que voit l'utilisateur</li>
+            <li>Représente une partie d'une page web</li>
+            <li>
+              Structurent l'application en parties maintenables et évolutives
+            </li>
+            <li>Un composant contient :</li>
+            <ul>
+              <li>Un décorateur @Component avec sa configuration</li>
+              <li>Un template HTML qui contrôle le rendu DOM</li>
+              <li>Un sélecteur CSS pour l'utilisation dans un template</li>
+              <li>Une classe TypeScript avec le comportement</li>
+            </ul>
+          </ul>
+          <div class="col-2">
+            <pre><code class="ts">// Composant avec template inline
+
+@Component({
+  selector: 'user-profile',
+  imports: [],
+  styles: `p { color: blue; }`,
+  template: `
+    <h1>User profile</h1>
+    <p>This is the user profile page</p>
+  `,
+})
+export class UserProfile {}</code></pre>
+            <pre><code class="ts">// Composant avec template et styles externes
+
+@Component({
+  selector: 'user-profile',
+  imports: [],
+  templateUrl: 'user-profile.html',
+  styleUrl: 'user-profile.css',
+})
+export class UserProfile {}</code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Arbre de composants</h2>
+          <div class="col-2">
+            <svg
+              viewBox="0 0 900 520"
+              width="900"
+              height="520"
+              role="img"
+              aria-label="Schéma de composants : UserProfile contient UserBiography et ProfilePhoto, et UserBiography contient UserAddress"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <marker
+                  id="arrow"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="8"
+                  markerHeight="8"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#d9d9d9"></path>
+                </marker>
+
+                <style>
+                  .box {
+                    stroke: #d9d9d9;
+                    stroke-width: 2;
+                    rx: 8;
+                    ry: 8;
+                  }
+                  .label {
+                    fill: #ffffff;
+                    font-family: system-ui, -apple-system, Segoe UI, Roboto,
+                      Arial, sans-serif;
+                    font-size: 22px;
+                    font-weight: 600;
+                  }
+                  .link {
+                    fill: none;
+                    stroke: #d9d9d9;
+                    stroke-width: 2.5;
+                    marker-end: url(#arrow);
+                  }
+                </style>
+              </defs>
+
+              <!-- UserProfile -->
+              <rect class="box" x="330" y="40" width="240" height="70"></rect>
+              <text class="label" x="450" y="83" text-anchor="middle">
+                UserProfile
+              </text>
+
+              <!-- UserBiography -->
+              <rect class="box" x="110" y="200" width="260" height="70"></rect>
+              <text class="label" x="240" y="243" text-anchor="middle">
+                UserBiography
+              </text>
+
+              <!-- ProfilePhoto -->
+              <rect class="box" x="530" y="200" width="260" height="70"></rect>
+              <text class="label" x="660" y="243" text-anchor="middle">
+                ProfilePhoto
+              </text>
+
+              <!-- UserAddress -->
+              <rect class="box" x="110" y="360" width="260" height="70"></rect>
+              <text class="label" x="240" y="403" text-anchor="middle">
+                UserAddress
+              </text>
+
+              <!-- Links -->
+              <!-- From UserProfile to UserBiography -->
+              <path class="link" d="M 450 110 C 450 150 310 160 240 200"></path>
+
+              <!-- From UserProfile to ProfilePhoto -->
+              <path class="link" d="M 450 110 C 450 150 590 160 660 200"></path>
+
+              <!-- From UserBiography to UserAddress -->
+              <path class="link" d="M 240 270 C 240 305 240 325 240 360"></path>
+            </svg>
+            <pre><code class="language-typescript">
+@Component({
+  selector: 'user-profile',
+  imports: [UserBiography, ProfilePhoto],
+  template: `
+    <user-biography></user-biography>
+    <profile-photo></profile-photo>
+`})
+export class UserProfile {}
+
+@Component({
+  selector: 'user-biography',
+  imports: [UserAddress],
+  template: `
+    <user-address></user-address>
+`})
+export class UserBiography {}
+</code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP7</h3>
+          <ol>
+            <li>Dans le même dossier que pour le TP6</li>
+            <li>Créer un composant "Header" avec la cli</li>
+            <li>Afficher "Ma super application" dans le template</li>
+            <li>
+              Inclure le Header dans le template du composant racine (app.ts)
+            </li>
+            <li>Vérifier que le message s'affiche dans l'application</li>
+            <li>
+              Faire en sorte que le Header prenne toute la largeur de l'écran
+            </li>
+            <li>Ajouter un style de fond au Header</li>
+            <li>Ajouter du contenu dans une balise main</li>
+          </ol>
+          <p><img src="../assets/tp7.png" alt="" /></p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Interface dynamiques avec les composants</h3>
+          <p>(On va tout voir dans les slides suivantes)</p>
+
+          <pre><code class="ts">@Component({
+  selector: 'app-salut',
+  imports: [],
+  template: `<h3>{{titre()}}</h3>
+  <button (click)="changerLeTitre()" [disabled]="titreAChange()">Changer le titre</button>
+  @if(titreAChange()) {
+    <p>Le titre a été changé !</p>
+  }`,
+})
+export class Salut {
+
+  public titre = signal("Bonjour tout le monde !");
+  public titreAChange = signal(false);
+
+  changerLeTitre() {
+    this.titreAChange.set(true);
+    this.titre.set("Salut les bg !");
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Interface dynamiques avec les composants</h3>
+          <div class="col-2" style="gap: 20px">
+            <img
+              src="../assets/archi_composant.png"
+              alt=""
+              style="width: 40%"
+            />
+            <pre><code class="ts">// Interpolation : afficher des valeurs dans le HTML
+<h3>{{titre()}}</h3>
+
+// Property binding : lier une propriété d'un élément HTML à une propriété du composant
+<button (click)="changerLeTitre()" [disabled]="titreAChange()">Changer le titre</button>
+
+// Event binding : lier un événement d'un élément HTML à une méthode du composant
+<button (click)="changerLeTitre()">Changer le titre</button>
+
+// Control flow : modifier la structure du DOM en fonction d'une condition
+@if(titreAChange()) {
+  <p>Le titre a été changé !</p>
+}</code>
+          </pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Interpolation</h2>
+          <p>L'interpolation permet d'afficher des valeurs dans le HTML</p>
+          <div class="col-2">
+            <pre><code class="html">
+<p>Utilisateur : {{ username() }}</p>
+<p>Total : {{ total() }}</p>
+  </code></pre>
+            <pre><code class="ts">@Component({...})
+export class UserProfile {
+  public username = signal('Alice');
+  public total = signal(42);
+}
+  </code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Property binding</h2>
+          <p>
+            Le property binding permet de lier une propriété DOM à une
+            expression.
+          </p>
+          <pre><code class="html">
+<img [src]="avatarUrl()" [alt]="username()">
+<button [disabled]="isDisabled()">Valider</button>
+  </code></pre>
+          <ul>
+            <li>Utilise la syntaxe [property]</li>
+            <li>Fonctionne avec les propriétés DOM et directives</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Top des property bindings Angular</h2>
+
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Property binding</th>
+                <th>Usage</th>
+                <th>Exemple</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>disabled</td>
+                <td>Activer ou désactiver un contrôle</td>
+                <td>
+                  <pre><code class="html"><button [disabled]="isDisabled()">Save</button></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>value</td>
+                <td>Définir la valeur d'un champ</td>
+                <td>
+                  <pre><code class="html"><input [value]="username()"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>checked</td>
+                <td>Cocher / décocher checkbox ou radio</td>
+                <td>
+                  <pre><code class="html"><input type="checkbox" [checked]="isSelected()"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>src</td>
+                <td>Source d'une image ou iframe</td>
+                <td>
+                  <pre><code class="html"><img [src]="avatarUrl()" [alt]="username()"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>alt</td>
+                <td>Texte alternatif d'image, accessibilité</td>
+                <td>
+                  <pre><code class="html"><img [src]="imgUrl()" [alt]="imgAlt()"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>class</td>
+                <td>Ajouter / retirer une classe CSS</td>
+                <td>
+                  <pre><code class="html"><div [class.active]="isActive()"></div></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>style</td>
+                <td>Appliquer un style inline dynamique</td>
+                <td>
+                  <pre><code class="html"><div [style.opacity]="isDisabled() ? 0.5 : 1"></div></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>hidden</td>
+                <td>Masquer un élément (sans le retirer du DOM)</td>
+                <td>
+                  <pre><code class="html"><section [hidden]="!isVisible()"></section></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>title</td>
+                <td>Afficher une info-bulle native</td>
+                <td>
+                  <pre><code class="html"><button [title]="tooltip()">Info</button></code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            Property binding : Angular écrit directement sur la propriété DOM,
+            typée et utilisée par le navigateur.
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Event binding</h2>
+          <p>L'event binding permet de réagir aux événements utilisateurs.</p>
+          <pre><code class="ts">@Component({
+selector: 'user-profile',
+imports: [],
+template: `
+  <button (click)="onSave()">Sauvegarder</button>
+  <input (input)="onInput($event)">
+`
+})
+export class UserProfile {
+  onSave() {
+    console.log('Profil sauvegardé !');
+  }
+
+  onInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    console.log('Input value:', input.value);
+  }
+}  </code></pre>
+          <ul>
+            <li>Utilise la syntaxe (event)</li>
+            <li>Appelle une méthode du composant</li>
+            <li>Les events natifs du DOM et ceux qu'on va dev</li>
+          </ul>
+        </section>
+        <section style="zoom: 0.9999">
+          <h2>Top événements DOM essentiels</h2>
+
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Événement</th>
+                <th>Usage principal</th>
+                <th>Exemple Angular</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>click</td>
+                <td>Action utilisateur principale, boutons</td>
+                <td>
+                  <pre><code class="html"><button (click)="save()">Save</button></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>input</td>
+                <td>Saisie temps réel, formulaires réactifs</td>
+                <td>
+                  <pre><code class="html"><input (input)="onInput($event)"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>change</td>
+                <td>Validation d'un champ, select, checkbox</td>
+                <td>
+                  <pre><code class="html"><select (change)="onChange($event)"></select></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>submit</td>
+                <td>Envoi et validation d'un formulaire</td>
+                <td>
+                  <pre><code class="html"><form (submit)="onSubmit()"></form></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>keydown</td>
+                <td>Raccourcis clavier, navigation</td>
+                <td>
+                  <pre><code class="html"><input (keydown)="onKeyDown($event)"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>keyup</td>
+                <td>Recherche, filtrage après saisie</td>
+                <td>
+                  <pre><code class="html"><input (keyup)="onKeyUp($event)"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>focus</td>
+                <td>Entrée dans un champ, accessibilité</td>
+                <td>
+                  <pre><code class="html"><input (focus)="onFocus()"></code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>blur</td>
+                <td>Sortie de champ, validation</td>
+                <td>
+                  <pre><code class="html"><input (blur)="onBlur()"></code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            Angular expose directement les événements natifs du DOM via la
+            syntaxe (event)
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Two-way binding</h2>
+          <p>Le two-way binding combine lecture et écriture.</p>
+          <p>(ca existe perso je fais tout pour pas m'en servir)</p>
+          <pre><code class="html">
+<input [(ngModel)]="name">
+  </code></pre>
+          <ul>
+            <li>Surtout utilisé avec les formulaires simples</li>
+            <li>À éviter au profit des Reactive Forms</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Control flow natif</h2>
+          <p>
+            Angular fournit des structures de contrôle intégrées au langage de
+            template.
+          </p>
+          <pre><code class="html"><!-- if then else -->
+@if (isLoggedIn()) {
+  <p>Bienvenue</p>
+} @else {
+  <p>Veuillez vous connecter</p>
+}
+  </code></pre>
+          <pre><code class="html"><!--  for loop -->
+@for (item of items(); track item.id) {
+  <li>{{ item.name }}</li>
+}
+</code></pre>
+          <pre><code class="html">
+            <!--  déclare variable -->
+@let toto = 'salut les champions'
+{{toto}}
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Content projection (ng-content)</h3>
+
+          <p>
+            Recevoir du contenu HTML depuis un parent et de l'insérer à des
+            emplacements précis de son template grâce à &lt;ng-content&gt;
+          </p>
+          <ul>
+            <li>Réutilisation de composants</li>
+            <li>Exemple: bouton générique, carte, modale...</li>
+            <li>
+              Exemple:
+              <a
+                href="https://monagence.uem-metz.fr/#/creation-de-compte/informations-contrat"
+                >ici</a
+              >
+            </li>
+          </ul>
+
+          <div class="col-2">
+            <pre><code class="language-ts">
+// Le fils controle l'insertion de contenu
+@Component({
+  selector: 'app-card',
+  template: `
+    <div class="card">
+      <header>
+        <ng-content select="[card-title]"></ng-content>
+      </header>
+
+      <section data-background-image="../assets/fond-blanc.png">
+        <ng-content></ng-content>
+      </section>
+    </div>
+  `
+})
+export class CardComponent {}
+  </code></pre>
+
+            <pre><code class="language-html">
+<!-- Utilisation pars le parent -->
+<app-card>
+  <!-- Peut en avoir plusieurs sections de contenu -->
+  <h3 card-title>Titre de la carte</h3>
+  <p>Contenu principal de la carte</p>
+</app-card>
+  </code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>TP8</h2>
+          <ul>
+            <li>interpolation/controlflow/propertiy binding/ng content</li>
+            <li>parcourir une liste</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Angular Signals
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="4" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Angular Signals</h2>
+          <p>(Nouveau) Mécanisme réactif natif d'Angular pour gérer l'état</p>
+          <ul>
+            <li>
+              Ils remplacent de nombreux usages complexes de RxJS pour l'état
+              local
+            </li>
+            <li>Ils sont synchrones, prédictibles et typés</li>
+            <li>Angular sait exactement quand recalculer et rerendre</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Créer un signal</h2>
+          <p>
+            Un signal contient une valeur et notifie automatiquement les
+            consommateurs lors des changements.
+          </p>
+          <pre><code class="ts">
+import { signal } from '@angular/core';
+
+const count = signal(0);
+
+count.set(1);
+count.update(value => value + 1);
+  </code></pre>
+          <ul>
+            <li>signal() crée un état réactif</li>
+            <li>set remplace la valeur</li>
+            <li>update applique une transformation</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Lire un signal</h2>
+          <p>La lecture d'un signal se fait comme une fonction.</p>
+          <pre><code class="ts">
+console.log(count());
+  </code></pre>
+          <p>Dans un template Angular, la lecture est automatique.</p>
+          <pre><code class="html">
+<p>Valeur : {{ count() }}</p>
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Signals et composants</h2>
+          <p>Les signals sont idéaux pour l'état local d'un composant.</p>
+          <pre><code class="ts">
+@Component({
+  selector: 'counter',
+  template: `
+    <button (click)="increment()">+</button>
+    <span>{{ count() }}</span>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class CounterComponent {
+  count = signal(0);
+
+  increment() {
+    this.count.update(v => v + 1);
+  }
+}
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Computed signals</h2>
+          <p>Permet de dériver un état à partir d'autres signals</p>
+          <pre><code class="ts">
+const doubleCount = computed(() => count() * 2); // Dépend de count
+                                                 // Recalculer uniquement si count change
+
+count.set(2);
+console.log(doubleCount()); // Affiche 4
+
+count.set(2);
+console.log(doubleCount()); // Affiche 4 (car pas de changement)
+
+count.set(5);
+console.log(doubleCount()); // Affiche 10
+
+count.update(v => v + 1);
+console.log(doubleCount()); // Affiche 12
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Effect</h2>
+          <p>Exécute du code en réaction aux changements de signals</p>
+          <pre><code class="ts">
+import { effect } from '@angular/core';
+
+effect(() => {
+  console.log('count changed:', count());
+});
+  </code></pre>
+          <ul>
+            <li>Utile pour le logging, les appels API ou le stockage local</li>
+            <li>Ne doit pas modifier directement l'état</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>TP9</h2>
+          <ul>
+            <li>signal</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Input/Output</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="5" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Input Signals</h3>
+
+          <p>
+            Les Input Signals permettent de déclarer des entrées de composant
+            sous forme de signals, rendant les dépendances de données explicites
+            et automatiquement réactives
+          </p>
+
+          <div class="col-2">
+            <pre><code class="language-ts">
+// user-profile.component.ts
+@Component({
+  selector: 'app-user-profile',
+  template: `
+    <p>Utilisateur : {{ name() }}</p> 
+    <p>Age : {{ age() }}</p>
+  `
+})
+export class UserProfileComponent {
+  name = input.require&lt;string&gt;()  // obligatoire
+  age = input&lt;number&gt;()           // optionnel
+}
+  </code></pre>
+            <pre><code class="language-html">
+<!-- Composant père -->
+<app-user-profile [name]="'Alice'" [age]="30"></app-user-profile>
+
+<!-- Ca marche age n'est pas obligatoire -->
+<app-user-profile [name]="'Eric'"></app-user-profile>
+
+<!-- Ca marche pas name est obligatoire -->
+<app-user-profile [age]="10"></app-user-profile>
+  </code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Output Signals</h3>
+
+          <p>
+            Les Output Signals permettent d'émettre des événements vers le
+            parent en utilisant une API basée sur les signals, plus simple et
+            plus typée que EventEmitter.
+          </p>
+
+          <ul>
+            <li>Déclaration via output()</li>
+            <li>$event contient la valeur émise</li>
+            <li>Utilisation avec la syntaxe (event)</li>
+          </ul>
+
+          <div class="col-2">
+            <pre><code class="language-ts">// counter.component.ts
+@Component({
+  selector: 'app-counter',
+  template: `
+    <button (click)="increment()">+</button>
+  `
+})
+export class CounterComponent {
+  countChange = output&lt;number&gt;()
+  private count = 0
+
+  increment() {
+    this.count++
+    this.countChange.emit(this.count)
+  }
+}</code></pre>
+            <pre><code class="language-html"><!-- app.component.html -->
+<app-counter
+  (countChange)="onCountChange($event)">
+</app-counter>
+  </code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Bonnes pratiques</h2>
+          <ul>
+            <li>Templates courts et lisibles</li>
+            <li>Une responsabilité par composant</li>
+            <li>Logique métier dans la classe</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>TP10</h2>
+          <ul>
+            <li>signal</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Services</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="6" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Service : base</h2>
+          <p>
+            Un service est une classe TypeScript réutilisable qui encapsule une
+            logique métier ou une fonctionnalité transversale
+          </p>
+          <ul>
+            <li>Accès API (HTTP)</li>
+            <li>Partage d'état</li>
+            <li>Auth, logs, erreurs, caches</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>À quoi sert l'injection de dépendances ?</h3>
+
+          <ul>
+            <li>Découpler les classes entre elles</li>
+            <li>Éviter la création manuelle des dépendances</li>
+            <li>Centraliser la gestion des instances</li>
+            <li>Faciliter les tests unitaires (mocks, fakes)</li>
+            <li>Améliorer la maintenabilité et l'évolutivité du code</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Créer un service (providedIn: 'root')</h2>
+          <div class="col-2">
+            <pre><code class="language-ts">
+// calculator.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({ providedIn: 'root' }) // singleton global
+export class CalculatorService {
+  add(x: number, y: number): number {
+    return x + y;
+  }
+}
+          </code></pre>
+            <pre><code class="language-ts" data-trim data-line-numbers="10">
+// app.component.ts
+import { Component, inject } from '@angular/core';
+import { CalculatorService } from './calculator.service';
+
+@Component({
+  selector: 'app-root',
+  template: `<p>Total : {{ total() }}</p>`
+})
+export class AppComponent {
+  private calc = inject(CalculatorService);
+  private total = signal(this.calc.add(5, 10));
+}
+          </code></pre>
+          </div>
+          <ul>
+            <li>
+              @Injectable() est une décoration qui indique à Angular que la
+              classe est un service
+            </li>
+            <li>
+              providedIn: 'root' signifie que le service est disponible dans
+              toute l'application (la plupart du temps ce qu'on veut)
+            </li>
+            <li>
+              inject() permet d'obtenir une instance du service dans un
+              composant ou un autre service
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Portée locale : providers dans le composant</h2>
+          <p>
+            Si le service est dans providers d'un composant, Angular crée une
+            instance propre à ce composant et ses enfants
+          </p>
+          <pre><code class="language-ts" data-trim data-line-numbers="11,7">
+import { Component } from '@angular/core';
+import { CalculatorService } from './calculator.service';
+
+@Component({
+  selector: 'app-local',
+  standalone: true,
+  providers: [CalculatorService],
+  template: `<p>Local total : {{ total() }}</p>`
+})
+export class LocalComponent {
+  private calc = inject(CalculatorService);
+  private total = signal(this.calc.add(1, 2)) ;
+}
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Signals : état dans un service</h2>
+          <p>Un service peut héberger un état partagé via signals</p>
+          <div class="col-2">
+            <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
+export class CounterStore {
+  private _count = signal(0);
+  public readonly count = this._count.asReadonly();
+
+  inc(): void {
+    this._count.update(v => v + 1);
+  }
+
+  reset(): void {
+    this._count.set(0);
+  }
+}
+          </code></pre>
+
+            <pre><code class="language-ts">@Component({
+  selector: 'app-counter',
+  standalone: true,
+  template: `
+    <p>Count : {{ store.count() }}</p>
+
+    <button (click)="store.inc()">+1</button>
+    <button (click)="store.reset()">Reset</button>
+  `
+})
+export class CounterComponent {
+  store = inject(CounterStore);
+}
+          </code></pre>
+          </div>
+
+          <p>
+            Note: asReadonly() pour exposer un signal en lecture seule
+            <br />(impossible de bidouiller la valeur depuis l'extérieur)
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>TP11</h2>
+          <ul>
+            <li>service, arbre de service, service local, store</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Services - HTTP
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="7" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Service HTTP</h2>
+          <p>C'est un service pour communiquer avec un serveur</p>
+          <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
+export class UserService {
+  constructor(private http: HttpClient) {}
+
+  getUsers() {
+    return this.http.get&lt;User[]&gt;('/api/users');
+  }
+}</code></pre>
+
+          <pre><code class="language-ts">//main.ts
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient() // Fournit HttpClient dans l'application
+  ]
+});</code></pre>
+          <ul>
+            <li>Marche via provideHttpClient() dans main.ts</li>
+            <li>Utilise RxJS (Observables) pour les appels asynchrones</li>
+            <li>Supporte les requêtes GET, POST, PUT, DELETE, etc.</li>
+            <li>Gère les en-têtes, les paramètres, les erreurs, etc.</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>RxJS</h2>
+          <ul>
+            <li>C'est un library pour la programmation réactive</li>
+            <ul>
+              <li>Gérer des flux de données asynchrones</li>
+            </ul>
+            <li>Historique en Angular (depuis le début)</li>
+            <li class="difficulty-of-death-lite">
+              Pas simple à maîtriser !!!!!!!!!!!!!!
+            </li>
+            <li style="margin-top: 0.3em">Mais pour le moment pas le choix</li>
+            <ul>
+              <li>L'API HTTP Angular retourne des Observables</li>
+              <li>Appel http en parrallèle a la suite...</li>
+              <li>Programmation réactive avancée</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.9"
+        >
+          <h3>Les concepts clés</h3>
+
+          <ul>
+            <li>Observable : source de données dans le temps</li>
+            <li>Observer : consomme les données</li>
+            <li>Subscription : lien entre les deux</li>
+          </ul>
+
+          <pre><code class="language-ts">// Créer un observable qui émet 3 valeurs puis se termine
+const observable = new Observable(subscriber => {
+  subscriber.next(1); // Émettre des valeurs
+  subscriber.next(2);
+  subscriber.next(3); 
+  subscriber.complete(); // Indique la fin de l'émission
+});
+
+// S'abonner à l'observable pour consommer les valeurs
+observable.subscribe({
+  next: value => console.log(value),            // Gérer chaque valeur émise
+  error: err => console.error('Erreur :', err), // Gérer les erreurs
+  complete: () => console.log('Terminé')        // Gérer la fin de l'émission
+});
+
+// Sortie attendue :
+// 1
+// 2
+// 3
+// Terminé</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Les opérateurs</h3>
+
+          <ul>
+            <li>
+              De plusieurs types : création, transformation, filtrage,
+              combinaison
+            </li>
+            <li>Utilisés avec la méthode pipe() des observables</li>
+            <li>
+              Permettent de composer des opérations sur les flux de données
+            </li>
+            <li>Exemples courants :</li>
+            <ul>
+              <li>map : transformer les valeurs</li>
+              <li>filter : filtrer les valeurs</li>
+            </ul>
+          </ul>
+          <pre><code class="language-ts">of(1, 2, 3, 4)                                 // Observable qui émet 1, 2, 3, 4
+.pipe(                                         // Appliquer des opérateurs avec pipe()
+  filter(n => n % 2 === 0),                    // Garder que les nombres pairs
+  map(n => n * 10)                             // Multiplier chaque nombre par 10
+)
+.subscribe(value => console.log(value));       // Consommer les valeurs transformées
+                                                // Avant l'appel à subscribe, rien ne se passe !
+// Sortie attendue :
+// 20
+// 40</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>RxJS — Fonctions les plus utilisées</h3>
+
+          <table class="compact-table">
+            <colgroup>
+              <col style="width: 10%" />
+              <col style="width: 10%" />
+              <col style="width: 40%" />
+              <col style="width: 40%" />
+            </colgroup>
+
+            <thead>
+              <tr>
+                <th>Fonction</th>
+                <th>Catégorie</th>
+                <th>Rôle</th>
+                <th>Exemple</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>of</td>
+                <td>Creation</td>
+                <td>Créer un observable à partir de valeurs</td>
+                <td>
+                  <pre><code class="language-ts">of(1, 2, 3)</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>from</td>
+                <td>Creation</td>
+                <td>Créer un observable depuis un tableau ou une promesse</td>
+                <td>
+                  <pre><code class="language-ts">from([10, 20, 30])</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>map</td>
+                <td>Transformation</td>
+                <td>Transformer les valeurs</td>
+                <td>
+                  <pre><code class="language-ts">map(x => x * 2)</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>filter</td>
+                <td>Filtering</td>
+                <td>Filtrer les valeurs</td>
+                <td>
+                  <pre><code class="language-ts">filter(x => x > 10)</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>tap</td>
+                <td>Utility / Side effects</td>
+                <td>Effets de bord (logs, debug)</td>
+                <td>
+                  <pre><code class="language-ts">tap(value => console.log(value))</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>switchMap</td>
+                <td>Transformation</td>
+                <td>Changer de flux (HTTP, recherche)</td>
+                <td>
+                  <pre><code class="language-ts">switchMap(v => this.service.search(v))</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>forkJoin</td>
+                <td>Combination</td>
+                <td>
+                  Appeler plusieurs WS en parallèle et attendre tous les
+                  résultats
+                </td>
+                <td>
+                  <pre><code class="language-ts">forkJoin([this.wsA(), this.wsB()])</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>subscribe</td>
+                <td>Subscription</td>
+                <td>Démarrer l'exécution et consommer les valeurs</td>
+                <td>
+                  <pre><code class="language-ts">subscribe(value => console.log(value))</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>unsubscribe</td>
+                <td>Subscription</td>
+                <td>Arrêter l'exécution et libérer les ressources</td>
+                <td>
+                  <pre><code class="language-ts">subscription.unsubscribe()</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>takeUntil</td>
+                <td>Subscription</td>
+                <td>
+                  Se désabonner automatiquement à la réception d'un signal
+                </td>
+                <td>
+                  <pre><code class="language-ts">takeUntil(this.destroy$)</code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Cas d'utilisation — HTTP</h3>
+
+          <p>En Angular, les appels HTTP retournent des observables</p>
+
+          <pre><code class="language-ts">
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  constructor(private http: HttpClient) {}
+
+  getUsers() {
+    return this.http.get&lt;User[]&gt;('/api/users');
+  }
+}
+  </code></pre>
+
+          <pre><code class="language-ts">// Dans un composant ou un autre service
+this.userService.getUsers().subscribe(users => {
+  this.users = users;
+});
+  </code></pre>
+          <ul>
+            <li>L'appel HTTP n'est effectué qu'à l'abonnement (subscribe)</li>
+            <li>
+              Complete automatique après la première valeur (pas de fuite
+              mémoire)
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Exemple 1: Appels en parallèle</h3>
+          <p>
+            J'appelle 2 WS en parallèle et j'attends les 2 résultats avant de
+            continuer : forkJoin
+          </p>
+          <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+
+  getContratsEtFactures(userId: number) {
+    return forkJoin({
+      contracts: this.http.get&lt;Contract[]&gt;(`/api/contracts?userId=${userId}`),
+      invoices: this.http.get&lt;Invoice[]&gt;(`/api/invoices?userId=${userId}`)
+    });
+  }
+}</code></pre>
+
+          <pre><code class="language-ts">this.userService.getContratsEtFactures(123).subscribe(({ contracts, invoices }) => {
+  this.contracts = contracts;
+  this.invoices = invoices;
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Exemple 2: Appels en séquentiel</h3>
+          <p>
+            J'appelle un WS et le resultat de l'appel sert à appeler 2 WS en
+            parallèle
+          </p>
+          <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+
+  getInvoices(username: string) {
+    return this.http.get&lt;User&gt;(`/api/users?name=${username}`).pipe(
+      switchMap(user =>this.http.get&lt;Invoice[]&gt;(`/api/invoices?userId=${user.id}`))
+    );
+  }
+}</code></pre>
+
+          <pre><code class="language-ts">this.userService.getInvoices('John').subscribe(invoices => {
+  this.invoices = invoices;
+});</code></pre>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.8"
+        >
+          <h3>Finalement c'est pas si dur ?</h3>
+          <p>
+            Exemple: j'appelle un WS et le resultat de l'appel sert à appeler 2
+            WS en parallèle + j'ai des filtres + du logging + du mapping + des
+            erreurs
+          </p>
+
+          <div class="col-2">
+            <pre
+              style="height: 650px"
+            ><code class="language-ts" data-line-numbers="5-31">@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+
+  getDashboard(username: string) {
+    return this.http.get&lt;User&gt;(`/api/users?name=${username}`).pipe(
+      tap(user =&gt; console.log('[User]', user)),
+      filter(user =&gt; user.active === true),
+      switchMap(user =&gt;
+        forkJoin({
+          contracts: this.http.get&lt;Contract[]&gt;(`/api/contracts?userId=${user.id}`),
+          invoices: this.http.get&lt;Invoice[]&gt;(`/api/invoices?userId=${user.id}`)
+        }).pipe(
+          tap(({ contracts, invoices }) =&gt; console.log('[Raw]', { contracts, invoices })),
+          map(({ contracts, invoices }) =&gt; ({
+            userId: user.id,
+            username: user.name,
+            contractsCount: contracts.length,
+            unpaidInvoices: invoices.filter(i =&gt; i.status === 'UNPAID'),
+            totalUnpaid: invoices
+              .filter(i =&gt; i.status === 'UNPAID')
+              .reduce((sum, i) =&gt; sum + i.amount, 0)
+          }))
+        )
+      ),
+      catchError(err =&gt; {
+        console.error('[Dashboard error]', err);
+        return throwError(() =&gt; new Error('Impossible de charger le dashboard'));
+      })
+    );
+  }
+}</code></pre>
+
+            <pre><code class="language-ts">// Dans un composant ou un autre service
+              
+              
+              
+              
+              
+              
+              
+              
+              
+this.userService.getDashboard('John').subscribe({
+  next: dashboard =&gt; {
+    this.dashboard = dashboard;
+  },
+  error: err =&gt; {
+    this.errorMessage = err.message;
+  }
+});
+
+// Et du coup si ca marche pas, on fait quoi ?
+// Les premieres fois très concrètement : mouchoir 
+
+
+
+</code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Service HTTP : Observable</h2>
+          <pre
+            style="height: 550px"
+          ><code class="language-ts">import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export type User = { id: number; name: string };
+
+@Injectable({ providedIn: 'root' })
+export class UsersApi {
+  private http = inject(HttpClient);
+
+  // un GET
+  list(): Observable&lt;User[]&gt; {
+    return this.http.get&lt;User[]&gt;('/api/users');
+  }
+
+  // un POST
+  create(user: Partial&lt;User&gt;): Observable&lt;User&gt; {
+    return this.http.post&lt;User&gt;('/api/users', user);
+  }
+
+  // un DELETE
+  delete(userId: number): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`/api/users/${userId}`);
+  }
+
+  // etc
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Lien avec le composant en Angular 21</h2>
+          <p>Le mieux c'est d'utiliser les interop Signals / Observables</p>
+
+          <pre><code class="language-ts" data-line-numbers="11">@Component({
+  selector: 'app-root',
+  template: `
+    @for (user of users(); track user.id) {
+      {{ user.name }}
+    }
+  `
+})
+export class AppComponent {
+  private api = inject(UsersApi);
+  users = toSignal(this.api.list(), { initialValue: [] }); // transformation Observable → Signal
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Interop : Signal → Observable (toObservable)</h2>
+          <p>
+            Utile quand tu veux réutiliser un flux RxJS (operators) à partir
+            d'un signal
+          </p>
+          <pre><code class="language-ts" data-line-numbers="13">@Component({
+  selector: 'app-search',
+  standalone: true,
+  template: `
+    <input [value]="term()" (input)="term.set(($event.target as HTMLInputElement).value)" />
+    <p>Résultats : {{ results().length }}</p>
+  `
+})
+export class SearchComponent {
+  private api = inject(SearchApi);
+
+  term = signal('');
+  private term$ = toObservable(this.term);
+
+  results = toSignal(this.api.search(this.term$), { initialValue: [] });
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Services - Intercepteur
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="8" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.9"
+        >
+          <h2>Intercepteur HTTP</h2>
+          <ul>
+            <li>
+              Intercepte les requêtes HTTP sortantes et les réponses entrantes
+            </li>
+            <ul>
+              <li>Ajouter des en-têtes (auth, logs)</li>
+              <li>Gérer les erreurs globales</li>
+              <li>Modifier les réponses (caching, transformation)</li>
+            </ul>
+            <li>Fonctionne comme un middleware</li>
+            <ul>
+              <li>req represente la requête HTTP entrante (readonly)</li>
+              <li>
+                next sert a passer la requête au prochain intercepteur ou au
+                backend
+              </li>
+            </ul>
+          </ul>
+          <pre><code class="language-ts">// mon-super-intercepteur.ts
+export function monSuperIntercepteur(req: HttpRequest&lt;unknown&gt;,next: HttpHandlerFn): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+// On peut modifier la requête ici
+  return next(req).pipe(
+    tap((event) => { /* On peut inspecter ou modifier la réponse ici */ }),
+  );
+}</code></pre>
+
+          <pre><code class="language-ts">
+//main.ts
+bootstrapApplication(AppComponent, {
+  providers: [provideHttpClient(withInterceptors([monSuperIntercepteur]))],
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Intercepteur HTTP: Exemple 1</h2>
+          <p>Modifier la requête avant qu'elle soit envoyée</p>
+          <pre><code class="language-ts">export function authInterceptor(req: HttpRequest&lt;unknown&gt;, next: HttpHandlerFn) {
+  const authToken = inject(AuthService).getAuthToken();
+  const newReq = req.clone({ headers: req.headers.append('X-Authentication-Token', authToken) });
+  return next(newReq);
+}
+          </code></pre>
+          <ul>
+            <li>
+              Possibilité d'injecter des services
+              <br />(Mais pas partout, il faut être dans un contexte
+              d'injection)
+            </li>
+            <li>Pour modifier la requête, il faut la cloner (immutable)</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Intercepteur HTTP: Exemple 2</h2>
+          <p>Agir sur la reponse</p>
+          <pre><code class="language-ts">export function loggingInterceptor(req: HttpRequest&lt;unknown&gt;, next: HttpHandlerFn) {
+  console.log('Request sent:', req);
+  return next(req).pipe(
+    tap((event) => {
+        if (event instanceof HttpResponse) {
+          console.log('Response received:', event);
+        }
+      }
+    ),
+  );</code></pre>
+          <ul>
+            <li>Utile pour le logging ou le debugging</li>
+            <li>Ne pas modifier la réponse directement</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>TP12</h2>
+          <ul>
+            <li>intercepteur HTTP</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Routage</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="9" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>C'est quoi ?</h2>
+          <p>
+            Le routeur Angular permet de gérer la navigation entre différentes
+            vues (composants) dans une application SPA
+            <br />Une route est un objet qui décrit quoi afficher pour un chemin
+            d'URL
+          </p>
+          <ul>
+            <li style="color: rgb(126, 125, 125)">
+              Rappel: SPA = Single Page Application = une seule page html
+            </li>
+            <li>Encore un concept bien puissant :</li>
+            <ul>
+              <li>Routage de composant</li>
+              <li>Sous-routes : insertion de composant dans un autre</li>
+              <li>Lazy loading : chargement à la demande</li>
+              <li>Paramètres dans l'URL</li>
+              <li>Controle d'accès (guards)</li>
+              <li>Chargement de données avant l'affichage (resolvers)</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Déclarer des routes</h3>
+          <p>Dans des fichiers *.routes.ts (ex: app.routes.ts)</p>
+
+          <pre><code class="language-ts">// app.routes.ts
+import { Routes } from '@angular/router';
+import { HomePage } from './home/home-page';
+import { AdminPage } from './admin/admin-page';
+
+export const routes: Routes = [
+  { path: '', component: HomePage },
+  { path: 'admin', component: AdminPage },
+  { path: 'user', component: UserPage },
+];</code></pre>
+
+          <ul>
+            <li>Visiter / affiche HomePage</li>
+            <li>Visiter /admin affiche AdminPage</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Brancher le router</h3>
+          <p>Avec provideRouter(routes) au bootstrap</p>
+
+          <pre><code class="language-ts">import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+  ],
+};</code></pre>
+
+          <ul>
+            <li>
+              On peut (et doit pour une vrai application) avoir plusieurs
+              fichiers de routes
+            </li>
+            <li>
+              Mais ici on en importe tjs un seul, qui regroupe toutes les routes
+            </li>
+            <li>
+              Il faut voir ca comme un arbre de routes, a coté des composants et
+              services
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Naviguer dans l'application (1)</h3>
+          <p>Avec la directive routerLink dans les templates</p>
+          <pre><code class="language-ts">&lt;a [routerLink]="['/user', userId()]"&gt;Voir le profil&lt;/a&gt; // Property binding</code></pre>
+          <pre><code class="language-ts">&lt;a routerLink="/admin"&gt;Aller à l'admin&lt;/a&gt; // Lien statique</code></pre>
+          <ul>
+            <li>
+              Le tableau passé à routerLink est concaténé pour former le path
+            </li>
+            <li>Utile pour les routes avec paramètres (ex: /user/123)</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Naviguer dans l'application (2)</h3>
+          <p>Avec le service Router dans le code TypeScript</p>
+          <pre><code class="language-ts" data-line-numbers="5-9">import { Router } from '@angular/router';
+
+@Component({ selector: 'app-some', template: `` })
+export class SomeComponent {
+  private router = inject(Router);
+
+  goToUserProfile(userId: string) {
+    this.router.navigate(['/user', userId]);
+  }
+}</code></pre>
+          <ul>
+            <li>
+              Utile pour naviguer en réponse à une action utilisateur (ex:
+              bouton)
+            </li>
+            <li>
+              Permet de construire dynamiquement le chemin (avec paramètres)
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.9"
+        >
+          <h3>Route params : URL dynamiques</h3>
+          <p>Paramètres avec <code>:</code> (ex: <code>user/:id</code>)</p>
+
+          <pre><code class="language-ts" data-line-numbers="5">import { Routes } from '@angular/router';
+import { UserProfile } from './user-profile/user-profile';
+
+export const routes: Routes = [
+  { path: 'user/:id', component: UserProfile }, // Exemples : /user/leeroy, /user/jenkins
+];</code></pre>
+
+          <pre><code class="language-ts" data-line-numbers="4-9">// Dans UserProfile component
+@Component({ selector: 'app-user-profile', template: ``})
+export class UserProfile {
+  // Option 1: avec snapshot (ne réagit pas aux changements de paramètre)
+  userId = toSignal(inject(ActivatedRoute).params.pipe(map(params =&gt; params['id'])));
+
+  // Option 2: avec withComponentInputBinding
+  // il faut mettre provideRouter(appRoutes, withComponentInputBinding()) dans main.ts
+  id = input();
+}</code></pre>
+
+          <ul>
+            <li>
+              Permet de créer des routes dynamiques (ex: profil utilisateur,
+              détails produit)
+            </li>
+            <li>
+              Récupération des paramètres via ActivatedRoute ou
+              withComponentInputBinding
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Ordre des routes : “first match wins”</h3>
+          <p>
+            Le router prend la première route qui match : la spécificité compte
+          </p>
+
+          <pre><code class="language-ts">export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'toto', redirectTo: '' },                        // redirige /toto vers /
+  { path: 'users/new', component: NewUserComponent },      // route spécifique (priorité sur users/:id)
+  { path: 'users/:id', component: UserDetailComponent },
+  { path: 'users', component: UsersComponent },
+  { path: '**', component: NotFoundComponent },            // match tout le reste
+];</code></pre>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.93"
+        >
+          <h3>Routes avancées : children</h3>
+          <div class="col-2">
+            <pre><code class="language-ts">export const routes: Routes = [
+  {
+    path: 'product',
+    component: ProductComponent,
+    children: [
+      { path: 'info', component: ProductInfoComponent },
+      { path: 'reviews', component: ProductReviewsComponent },
+    ],
+  },
+];</code></pre>
+
+            <pre><code class="language-ts" data-line-numbers="7">
+// Dans product.component.ts
+@Component({
+  selector: 'app-product',
+  template: `
+    &lt;h2&gt;Product Details&lt;/h2&gt;
+    &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  `
+})
+</code></pre>
+          </div>
+
+          <ul>
+            <li>
+              Les routes enfants sont des routes qui s'appliquent à un composant
+              parent
+            </li>
+            <li>
+              Le composant parent doit contenir un &lt;router-outlet&gt; pour
+              afficher les enfants
+            </li>
+            <li>Permet de controler des vues imbriquées</li>
+            <li>
+              Ici /product/info affiche ProductInfoComponent dans
+              ProductComponent
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.93"
+        >
+          <h3>Routes avancées : children</h3>
+          <div class="col-2">
+            <pre><code class="language-ts">// app.routes.ts
+export const routes: Routes = [
+  {
+    path: 'product',
+    component: ProductComponent,
+    loadChildren: () => import('./product/product.routes').then(m =&gt; m.productRoutes)
+  },
+];</code></pre>
+
+            <pre><code class="language-ts" data-line-numbers="7">// product.routes.ts
+export const productRoutes: Routes = [
+  { path: 'info', component: ProductInfoComponent },
+  { path: 'reviews', component: ProductReviewsComponent },
+];
+</code></pre>
+          </div>
+
+          <ul>
+            <li>Permet de découper les routes dans plusieurs fichiers</li>
+            <li>
+              Utile pour les routes avec beaucoup d'enfants ou des domaines
+              fonctionnels distincts
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Chargement : eager vs lazy</h3>
+          <p>
+            component = eager (bundle initial), loadComponent = lazy (import
+            dynamique)
+          </p>
+
+          <pre><code class="language-ts">export const routes: Routes = [
+  { path: 'main', loadComponent: () => import('./main/main-page').then(m => m.MainPage) },
+  { path: 'login', component: LoginPage},
+  { path: 'admin', loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes) },
+];</code></pre>
+
+          <p>
+            On ne veut pas charger tout le code de l'application au démarrage
+            (avant authentitication de l'utilisateur par exemple)
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Routage - Control d'accès
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="10" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Guards</h2>
+          <p>
+            Les guards sont des fonctions qui permettent de contrôler l'accès
+            aux routes
+            <a
+              href="https://angular.dev/guide/routing/route-guards#route-guard-return-types"
+              >voir ici</a
+            >
+          </p>
+          <ul>
+            <li>Implémentent la logique d'autorisation</li>
+            <li>Décident si une route peut être activée ou non</li>
+            <li>
+              Utilisent l'injection de dépendances pour accéder aux services
+            </li>
+          </ul>
+          <pre><code class="language-ts">export function authGuard(): CanActivateFn {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  return authService.isLoggedIn() ? true : router.parseUrl('/login');
+}</code></pre>
+          <pre><code class="language-ts">export const routes: Routes = [
+  { path: 'admin', canActivate: [authGuard] },
+  { path: 'login', component: LoginPage },
+];</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Directives</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="11" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Pipes</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="12" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Form</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="13" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Formulaire</h2>
+          <blockquote>
+            "L'élément HTML form représente une section du document contenant
+            des contrôles interactifs permettant de soumettre des informations."
+            <a
+              href="https://developer.mozilla.org/fr/docs/Web/HTML/Reference/Elements/form"
+              >*</a
+            >
+          </blockquote>
+
+          <ul>
+            <li>Saisie utilisateur structurée</li>
+            <li>Validation côté client</li>
+            <li>Gestion de l'état (valide, invalide, touched, dirty)</li>
+            <li>Intégration forte avec TypeScript</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Les deux approches Angular</h3>
+          <ul>
+            <li>Template-driven forms</li>
+            <li>Reactive forms</li>
+          </ul>
+
+          <p>
+            En contexte professionnel, on privilégie Reactive Forms
+            <br />(en tout cas chez nous !)
+          </p>
+
+          <ul>
+            <li>Code plus explicite</li>
+            <li>Meilleure testabilité</li>
+            <li>Logique côté TypeScript</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Qu'est-ce qu'un Reactive Form ?</h3>
+          <p>
+            Un Reactive Form est défini entièrement en TypeScript à l'aide
+            d'objets immuables représentant l'état du formulaire.
+          </p>
+
+          <ul>
+            <li>FormControl : un champ</li>
+            <li>FormGroup : un formulaire</li>
+            <li>FormArray : une liste dynamique de champs</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Créer un FormControl</h3>
+          <p>Un champ avec une valeur initiale et des validateurs</p>
+
+          <pre><code class="language-ts">import { FormControl, Validators } from '@angular/forms';
+
+const emailControl = new FormControl('', [
+  Validators.required,
+  Validators.email,
+]);</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Créer un FormGroup</h3>
+          <p>Un formulaire composé de plusieurs champs</p>
+
+          <pre><code class="language-ts">import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+const loginForm = new FormGroup({
+  email: new FormControl('', [Validators.required, Validators.email]),
+  password: new FormControl('', Validators.required),
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Lier le formulaire au template</h3>
+          <p>Connexion entre TypeScript et HTML</p>
+
+          <pre><code class="language-html">&lt;form [formGroup]="loginForm"&gt;
+  &lt;input type="email" formControlName="email"&gt;
+  &lt;input type="password" formControlName="password"&gt;
+&lt;/form&gt;</code></pre>
+
+          <ul>
+            <li>Utilisation de formGroup pour lier le formulaire</li>
+            <li>Utilisation de formControlName pour chaque champ</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Lire l'état du formulaire</h3>
+          <p>Chaque champ expose son état</p>
+
+          <table class="compact-table">
+            <colgroup>
+              <col style="width: 10%" />
+              <col style="width: 40%" />
+              <col style="width: 40%" />
+            </colgroup>
+
+            <thead>
+              <tr>
+                <th>Propriété</th>
+                <th>Signification</th>
+                <th>Exemple</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>valid</td>
+                <td>valide ou non</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.valid</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>invalid</td>
+                <td>invalide ou non</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.invalid</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>touched</td>
+                <td>touché ou non</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.controls.email.touched</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>untouched</td>
+                <td>non touché</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.controls.email.untouched</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>dirty</td>
+                <td>modifié ou non</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.controls.email.dirty</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>pristine</td>
+                <td>non modifié</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.controls.email.pristine</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>errors</td>
+                <td>objet contenant les erreurs de validation</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.controls.email.errors</code></pre>
+                </td>
+              </tr>
+
+              <tr>
+                <td>value</td>
+                <td>valeur actuelle du champ ou du formulaire</td>
+                <td>
+                  <pre><code class="language-ts">this.loginForm.value</code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Validation des formulaires</h3>
+
+          <ul>
+            <li>Validators intégrés Angular</li>
+            <ul>
+              <li>required</li>
+              <li>minLength / maxLength</li>
+              <li>email</li>
+              <li>pattern</li>
+            </ul>
+            <li>Possibilité de créer des validateurs personnalisés</li>
+          </ul>
+
+          <pre><code class="language-ts">password: new FormControl('', [
+  Validators.required,
+  Validators.minLength(8),
+]);</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Réagir aux changements</h3>
+          <p>Les formulaires exposent des observables RxJS</p>
+
+          <pre><code class="language-ts">this.loginForm.valueChanges.subscribe(value => {
+  console.log(value);
+});
+
+this.loginForm.statusChanges.subscribe(status => {
+  console.log(status);
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Soumettre un formulaire</h3>
+
+          <pre><code class="language-ts">onSubmit() {
+  if (this.loginForm.valid) {
+    console.log(this.loginForm.value);
+  }
+}</code></pre>
+
+          <pre><code class="language-html">&lt;form [formGroup]="loginForm" (ngSubmit)="onSubmit()"&gt;
+&lt;/form&gt;</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Angular material
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="14" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Angular Material</h2>
+          <ul>
+            <li>
+              Une lib crée et maintenu par l'équipe Angular (Voir
+              <a href="https://material.angular.dev/components/categories"
+                >ici</a
+              >)
+            </li>
+            <li>Plusieurs aspects présent</li>
+            <ul>
+              <li>Bibliothèque de composant haut niveau prêts à l'emploi</li>
+              <ul>
+                <li>Implémentation du design system material</li>
+              </ul>
+              <li>
+                Un CDK (=des API plutôt bas niveau) pour construire et tester
+                des composants
+              </li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pourquoi Angular Material ?</h3>
+
+          <ul>
+            <li>Concernant les composants haut niveau</li>
+            <ul>
+              <li>Gagner du temps sur l'UI</li>
+              <li>Bon niveau d'accessibilité (a11y)</li>
+              <li>Marche sur tout les navigateurs</li>
+            </ul>
+            <li>Concernant le CDK</li>
+            <ul>
+              <li>Top quand on a un design system imposé</li>
+              <li>Briques techniques sans design imposé</li>
+              <li>Gestion du focus, clavier et accessibilité</li>
+              <li>Test Harness pour des tests robustes et maintenables</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Installation</h3>
+
+          <pre><code class="language-bash">ng add @angular/material</code></pre>
+
+          <img src="../assets/material.png" alt="" />
+          <p>
+            Ici j'ai choisi Azure/Blue, il y en a plusieurs existant avec la
+            possibilité custom des éléments (Voir
+            <a href="https://material.angular.dev/guide/theming">ici</a>)
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Premier exemple</h3>
+
+          <pre><code class="language-ts">@Component({
+  standalone: true,
+  imports: [MatButtonModule],
+  template: `<button mat-raised-button>OK</button>`
+})
+export class ExampleComponent {}</code></pre>
+
+          <ul>
+            <li>Pas oublié d'importer le composant</li>
+            <li>Via son module (vestige des anciennes versions)</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Composants Angular Material les plus utilisés</h3>
+
+          <table class="compact-table">
+            <thead>
+              <tr>
+                <th>Composant</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>MatButton</td>
+                <td>
+                  Boutons Material (primary, accent, warn, actions utilisateur)
+                </td>
+              </tr>
+              <tr>
+                <td>MatInput</td>
+                <td>Champ de saisie texte intégré aux formulaires</td>
+              </tr>
+              <tr>
+                <td>MatFormField</td>
+                <td>
+                  Conteneur de champs avec label, erreurs et accessibilité
+                </td>
+              </tr>
+              <tr>
+                <td>MatIcon</td>
+                <td>Affichage d’icônes Material</td>
+              </tr>
+              <tr>
+                <td>MatDialog</td>
+                <td>Fenêtres modales (confirmation, formulaire, alerte)</td>
+              </tr>
+              <tr>
+                <td>MatTable</td>
+                <td>Tableaux de données avec tri, pagination et filtres</td>
+              </tr>
+              <tr>
+                <td>MatSnackBar</td>
+                <td>Messages temporaires de notification</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Angular Material + Reactive Forms</h3>
+
+          <pre style="height: 600px"><code class="language-html">@Component({
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  template: `
+    &lt;form [formGroup]="form" (ngSubmit)="submit()"&gt;
+      &lt;mat-form-field&gt;
+        &lt;mat-label&gt;Email&lt;/mat-label&gt;
+        &lt;input matInput type="email" formControlName="email"/&gt;
+      &lt;/mat-form-field&gt;
+
+      &lt;button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"&gt;
+        Envoyer
+      &lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class ExampleComponent {
+  form = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ])
+  });
+
+  submit() {
+    console.log(this.form.value);
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Angular (avant Angular 16 & 21)
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="15" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Angular (avant Angular 16 & 21)</h2>
+
+          <ul>
+            <li>Architecture basée sur NgModules</li>
+            <ul>
+              <li>Pas de standalone components</li>
+            </ul>
+            <li>Pas de signals</li>
+            <ul>
+              <li>Change detection avec zonejs</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Architecture centrale : NgModules</h3>
+
+          <p>Toute application Angular était organisée autour des modules</p>
+          <ul>
+            <li>Déclarer les composants, directives, pipes</li>
+            <li>Gérer les imports</li>
+            <li>Gérer les exports</li>
+            <li>Gérer l'injection de dépendances</li>
+          </ul>
+          <img
+            src="../assets/archi_angular_old.png"
+            alt=""
+            style="height: 400px"
+          />
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Les modules</h3>
+
+          <p>Les composants doivent être déclarés dans un module.</p>
+
+          <div class="col-2">
+            <pre><code class="language-ts">@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html'
+})
+export class HomeComponent {
+  title = 'Home';
+
+}</code></pre>
+
+            <pre><code class="language-ts">@NgModule({
+  declarations: [HomeComponent], // Il faut declarer tout les composants du module 
+  imports: [
+    CommonModule
+  ],
+  providers: [
+    HomeService,                 // Provider disponible pour et que pour module
+  ],
+  exports: [HomeComponent]       // Et choisir ceux qu'on exporte en dehors du module 
+})
+export class HomeModule {}</code></pre>
+          </div>
+
+          <ul>
+            <li>Impossible de les utiliser sans les déclarer dans un Module</li>
+            <li>
+              Pour le moment il y a encore la notions de modules dans les
+              <span class="kiki">tests</span>
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pas de Signals, pas d'inject</h3>
+
+          <p>Tout repose sur RxJS: il y en a partout</p>
+
+          <div class="col-2">
+            <pre><code class="language-ts">@Component({
+  selector: 'app-home',
+  template: `<h1>{{titre | async}}</h1>`
+})
+export class HomeComponent {
+  titre: Observable&lt;string&gt;;
+
+  constructor(private homeService: HomeService){}
+
+}</code></pre>
+            <pre><code class="language-ts">@Component({
+  selector: 'app-home',
+  template: `<h1>{{titre}}</h1>`
+})
+export class HomeComponent {
+  titre: string;
+
+  constructor(private homeService: HomeService){
+    homeService.getTitle()
+      .pipe(takeUntilDestroyed())  // sinon fuite mémoire, l'observable est pas kill
+      .subscribe(titre => this.titre2 = titre);
+  }
+
+}</code></pre>
+          </div>
+
+          <ul>
+            <li>
+              Méthode 1 avec le pipe async : gérer tout seul le kill de
+              l'observable
+            </li>
+            <li>
+              Méthode 2 subscribe dans le composant: il faut faire attention au
+              fuite mémoire
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Change Detection classique</h3>
+
+          <p>Angular détecte les changements automatiquement via la zone.js</p>
+
+          <ul>
+            <li>Change detection globale</li>
+            <li>Déclenchée par événements, timers, HTTP</li>
+            <li>Peut être coûteuse sur de grosses apps</li>
+          </ul>
+          <p class="col-2" style="justify-content: space-around">
+            <img src="../assets/zone.png" alt="" style="height: 300px" />
+            <img
+              src="../assets/archi-signal.png"
+              alt=""
+              style="height: 300px"
+            />
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>RxJS partout</h3>
+
+          <p>RxJS est la pierre angulaire pour :</p>
+
+          <ul>
+            <li>HTTP</li>
+            <li>Formulaires (valueChanges)</li>
+            <li>Communication entre composants</li>
+            <li>Gestion d'état avancée</li>
+          </ul>
+
+          <pre><code class="language-ts">this.http.get('/api/users')
+  .subscribe(users => this.users = users);</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Limites et à retenir</h3>
+
+          <ul>
+            <li>Pourquoi ca a évolué ?</li>
+            <ul>
+              <li>Beaucoup de boilerplate</li>
+              <li>NgModules complexes à maintenir</li>
+              <li>Change detection parfois coûteuse</li>
+              <li>Montée en complexité sur gros projets</li>
+            </ul>
+            <li>A retenir</li>
+            <ul>
+              <li>Angular 16 (standalone) et 21 (signals)</li>
+              <li>Encore beaucoup utilisée</li>
+              <li>Mécanisme de module utilisé dans les tests</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Tests Angular</h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="16" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pourquoi tester ?</h3>
+          <ul>
+            <li>Détecter les bugs tôt</li>
+            <li>Documenter le comportement attendu</li>
+            <li>Refactorer sans peur</li>
+            <li>Améliorer la qualité (contrats clairs)</li>
+          </ul>
+          <p>
+            Ca peut sembler évider mais quand l'application grossi, c'est hyper
+            utile de savoir tout les cas possible des composants
+          </p>
+          <p class="difficulty-of-death-lite">
+            C'est un des endroits ou il faut être le plus rigoureux
+          </p>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.95"
+        >
+          <h3>Approches et type de tests</h3>
+          <p>La question est de savoir évaluer le rapport coût/qualité</p>
+          <div class="col-2" style="justify-content: space-around">
+            <img src="../assets/pyramide-tests.png" style="height: 300px" />
+            <img src="../assets/trophy-tests.png" style="height: 300px" />
+          </div>
+          <table class="compact-table">
+            <tbody>
+              <tr>
+                <td><strong>Tests statiques</strong></td>
+                <td>
+                  Analyser le code sans l’exécuter (Type checking, formatage,
+                  linting)
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Tests unitaires</strong></td>
+                <td>Tester un composant ou une fonction isolée</td>
+              </tr>
+              <tr>
+                <td><strong>Tests d’intégration</strong></td>
+                <td>
+                  Vérifier le fonctionnement de plusieurs composants ensemble
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Tests end-to-end (E2E)</strong></td>
+                <td>Simuler un parcours utilisateur complet</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Stack par défaut (Angular CLI)</h3>
+          <ul>
+            <li>
+              Runner de tests : Vitest (par défaut sur les nouveaux projets)
+            </li>
+            <li>API d'assertions : expect</li>
+            <li>Mocks / spies : vi.fn(), vi.spyOn()</li>
+            <li>Environnement DOM : jsdom</li>
+          </ul>
+
+          <pre><code class="language-bash">ng test</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Structure d'un test</h3>
+
+          <ul>
+            <li>describe = un ensemble de test</li>
+            <li>it = un test = une intention clair de test</li>
+            <li>
+              expect = une assertion = je m'attend a ce que j'ai ceci ou cela
+            </li>
+            <li>Optionnel : structurer en given, when, then</li>
+          </ul>
+
+          <pre><code class="language-ts">describe('sum', () => {
+  it('should be 5 when 2 is added to 3', () => {
+    // Given
+    const a = 2;
+    const b = 3;
+
+    // When
+    const result = a + b;
+
+    // Then
+    expect(result).toBe(5);
+  });
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TestBed : le "container" de tests Angular</h3>
+          <p>
+            TestBed permet de configurer un module de test : providers, imports,
+            composants<br />(C'est pour ca qu'il faut savoir ce qu'est un
+            module)
+          </p>
+
+          <pre><code class="language-ts">beforeEach(() => {
+  TestBed.configureTestingModule({
+    providers: [],
+    imports: [],
+  });
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Tester un service (DI + mocks)</h3>
+
+          <div class="col-2" style="height: 550px">
+            <pre><code class="language-ts">describe('UserService', () => {
+
+  function setup(loggerMock: Logger) {
+    await TestBed.configureTestingModule({
+      providers: [
+        { provide: Logger, useValue: loggerMock },
+      ],
+    });
+    return TestBed.inject(UserService)
+  }
+
+
+  it('logs when creating a user', () => {
+    // Given
+    const loggerMock = { log: vi.fn() };
+    const { facade } = setup(loggerMock);
+
+    // When
+    const user = facade.createUser('Alice');
+
+    // Then
+    expect(loggerMock.log).toHaveBeenCalledWith('create:Alice');
+  });
+});</code></pre>
+            <pre><code class="language-ts">class Logger {
+  log(_msg: string) {}
+}
+
+@Injectable({providedIn: 'root'})
+export class UserService {
+  logger = inject(Logger);
+  createUser(name: string) { this.logger.log(`create:${name}`); }
+}</code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Tester un service (DI + mocks)</h3>
+
+          <div class="col-2" style="height: 550px">
+            <pre
+              style="width: 1050px"
+            ><code class="language-ts">describe('UserService', () => {
+
+  function setup(loggerMock: Logger) {                  // fonction setup pour configurer l'environnement de test
+    await TestBed.configureTestingModule({              // (On peut aussi passer par un beforeEach
+      providers: [                                      // mais faudra déclarer des variables intermédiaires)
+        { provide: Logger, useValue: loggerMock },      // ici on inject le mock de Logger
+      ],
+    });
+    return TestBed.inject(UserService)                  // Et on créer le service sur la base de l'environnement de test 
+  }
+
+  it('logs when creating a user', () => {               // début du test
+    // Given
+    const loggerMock = { log: vi.fn() };                // Création du mock de logger avec vitest 
+    const { userService } = setup(loggerMock);          // Création du service à tester 
+
+    // When
+    const user = userService.createUser('Alice');       // Appel de la fonction testé
+
+    // Then
+    expect(loggerMock.log).toHaveBeenCalledWith('create:Alice');  // Assertions
+  });
+});</code></pre>
+          </div>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.8"
+        >
+          <h3>Tester l'HTTP : HttpTestingController</h3>
+          <p>
+            On intercepte les requêtes et on "flush" une réponse mockée, sans
+            serveur réel
+          </p>
+
+          <pre
+            style="height: 750px"
+          ><code class="language-ts">@Injectable({providedIn: 'root'})
+class UserService {
+  private http = inject(HttpClient);
+  getUsers() { return this.http.get&lt;User[]&gt;('/api/users'); }
+}
+
+describe('UserService', () => {
+  let userService: UserService;               // Quand on utilise beforeEach il faut des var intermédiaires
+
+  beforeEach(async () => {
+     TestBed.configureTestingModule({
+      providers: [
+        UserService,
+        provideHttpClient(),                  // Comme dans main.ts il ce provide pour faire des appels HTTP 
+        provideHttpClientTesting(),           // + un service fourni par angular pour les tests HTTP
+      ],
+    });
+    userService = TestBed.inject(UserService);
+  });
+
+  it('mocks GET /api/users', () => {
+    const httpMock = TestBed.inject(HttpTestingController);  // service permettant les mock HTTP
+
+    let received: any;
+    api.getUsers().subscribe(data => received = data);
+
+    const req = httpMock.expectOne('/api/users');            // 
+    expect(req.request.method).toBe('GET');                  // Définition de ce que va retourner l'API
+    req.flush([{ id: 1, name: 'Alice' }]);                   //
+
+    expect(received[0].name).toBe('Alice');
+
+    httpMock.verify();                                       // A la fin on verifie que ca a bien été appelé
+  });
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Tester un composant : ComponentFixture</h3>
+          <p>
+            Un composant = classe + template : on teste l'intégration des 2 via
+            le DOM
+          </p>
+
+          <pre><code class="language-ts">@Component({selector: 'app-counter',
+  template: `
+    <p data-testid="value">{{ value() }}</p>
+    <button (click)="inc()">+</button>
+  `,
+})
+class CounterComponent {
+  value = signal(0);
+  inc() { this.value.update(v => v + 1); }
+}
+
+describe('CounterComponent', () => {
+  it('increments value on click', async () => {
+    await TestBed.configureTestingModule({
+      imports: [CounterComponent],
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(CounterComponent);
+    fixture.detectChanges();
+
+    const btn: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    btn.click();
+    fixture.detectChanges();
+
+    const valueEl: HTMLElement = fixture.nativeElement.querySelector('[data-testid="value"]');
+    expect(valueEl.textContent?.trim()).toBe('1');
+  });
+});</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
+            Bravo et merci
+          </h1>
+          <div style="display: flex; justify-content: center; padding: 0">
+            <app-plan completed="18" style="font-size: 0.4em"></app-plan>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Bonne pratiques: organisation du dossier app/</h3>
+          <pre><code class="language-text">
+tp6
+...
+├─ src
+│  ├─ app
+│  │  ├─ core/                        // services singleton, logique transverse
+│  │  │  ├─ services/
+│  │  │  └─ guards/
+│  │  ├─ features/                    // domaines fonctionnels (lazy loading)
+│  │  │  └─ user/
+│  │  │     ├─ user.routes.ts
+│  │  │     └─ user.component.ts
+│  │  ├─ shared/                      // composants et utilitaires réutilisables
+│  │  │  ├─ components/
+│  │  │  └─ pipes/
+│  │  ├─ app.routes.ts                // routage principal 
+│  │  └─ app.component.ts             // composant racine  
+...
+  </code></pre>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/highlight/highlight.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        plugins: [RevealHighlight],
+      });
+    </script>
+  </body>
+</html>

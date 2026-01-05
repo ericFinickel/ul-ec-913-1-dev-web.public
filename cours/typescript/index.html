@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>TypeScript</title>
+
+    <link rel="stylesheet" href="../assets/global.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css"
+      id="theme"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github.min.css"
+    />
+
+    <style>
+      .reveal pre code {
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1>TypeScript</h1>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pourquoi Typescript (1)</h3>
+          <p>En Javascript:</p>
+          <pre><code class="language-javascript">const obj = { width: 2, height: 5 };
+const area = obj.width * obj.heigth;</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pourquoi Typescript (2)</h3>
+          <p>En Typecript:</p>
+          <pre><code class="language-typescript">const obj = { width: 10, height: 15 };
+const area = obj.width * obj.heigth;
+//                       ^^^^^^^^^^
+//                       Property 'heigth' does not exist</code></pre>
+        </section>
+
+        <section
+          style="zoom: 0.95"
+          data-background-image="../assets/fond-blanc.png"
+        >
+          <h3>Du coup</h3>
+          <ul>
+            <li>TypeScript est sorti en 2012</li>
+            <li>Open source (Microsoft)</li>
+            <li>Cocréé par Anders Hejlsberg (un créateurs de C#)</li>
+          </ul>
+          <div
+            style="
+              color: red;
+              border: 3px solid red;
+              border-radius: 50px;
+              margin: 15px;
+              padding: 8px;
+            "
+          >
+            <p>Ajoute le typage statique à JavaScript</p>
+            <p>↕</p>
+            <p>Pour rendre des milions de lignes de JS plus robuste</p>
+          </div>
+          <p>
+            (Bonus : Ne suit pas forcément le
+            <a href="https://tc39.es/">TC39</a> )
+          </p>
+        </section>
+
+        <section
+          style="zoom: 0.9"
+          data-background-image="../assets/fond-blanc.png"
+        >
+          <h3>Relation TypeScript ↔ JavaScript</h3>
+          <ul>
+            <li>TypeScript est une surcouche de JavaScript</li>
+            <li>Un code qui marche en JS marche en TS</li>
+            <li>
+              Le code typescript est "transpiler" en JS pour être executer
+            </li>
+            <ul>
+              <li>(Transparent pour le developpeur la plupart du temps)</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pourquoi utiliser TypeScript ?</h3>
+          <ul>
+            <li>Détection d’erreurs à la compilation</li>
+            <li>Auto-complétion et refactoring améliorés</li>
+            <li>Code plus robuste et maintenable</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Installation</h3>
+          <pre><code class="language-bash">npm install -D typescript
+tsc --version</code></pre>
+          <p>
+            Initialiser un projet
+            <span style="font-size: 0.8em"
+              >(génère un fichier tsconfig.json)</span
+            >
+          </p>
+          <pre><code data-trim class="language-bash">tsc --init</code></pre>
+          <p>Compiler le projet :</p>
+          <pre><code class="language-bash">tsc</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>
+            TP 4: générer un projet TS from scratch et convertir un petit code
+            JS
+          </h3>
+          <ol style="width: 100%; font-size: 0.7em">
+            <li>Dans un nouveau dossier tp4, initialiser un projet npm</li>
+            <li>
+              Installer typescript en dependance de dev et initié le projet TS
+              <ul>
+                <li>
+                  <span style="display: flex; align-items: center">
+                    <span>decommentez la ligne</span>
+                    <pre
+                      style="margin-top: 0; margin-bottom: 0; width: 400px"
+                    ><code>"outDir": "./dist"</code></pre>
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>
+              Prendre ce <a href="../assets/user.service.js">fichier</a>, le
+              mettre à la racine, changer l'extension en .ts et faire marcher le
+              truc
+            </li>
+            <li>
+              A la fin la sortie doit être:
+              <pre><code>$ npm run prod
+
+> tp4@1.0.0 prod
+> node dist/user.service.js
+
+Premier user de la liste :  Alice (25 ans)
+Age moyen : 25</code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>tsconfig.json (exemple minimal)</h3>
+          <ul>
+            <li>Permet de configurer le compilateur TypeScript</li>
+            <li>
+              Il y a plein
+              <a href="https://www.typescriptlang.org/tsconfig/">d'options</a>
+            </li>
+          </ul>
+          <pre><code class="language-json">{
+  "compilerOptions": {
+    "target": "ES2020", // Vers quelle version de JS on compile
+    "module": "ESNext", // Système de module (ESM, CommonJS, etc.)
+    "strict": true, 
+    "outDir": "dist"    // Dossier de sortie
+  },
+  "include": ["src"]    // Dossier source
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Premiere experience</h3>
+          <pre><code class="language-typescript">// hello.ts
+function direSalut(nom: string): string {
+  return `Salut, ${nom}!`;
+}
+console.log(greet("Eric"));
+          </code></pre>
+          <pre><code class="language-bash">
+tsc hello.ts
+node hello.js
+// Sortie : Salut, Eric!
+          </code></pre>
+          <p>
+            Le compilateur génère un fichier <code>.js</code> exécutable dans
+            n’importe quel runtime JS.
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Dernière chose</h3>
+          <p>
+            <span style="font-size: 4em">⚠️</span><br />
+            Au run : plus de typescript, plus de type<br />C'est le JS issue de
+            la transpilation qui est runné
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Disclaimer</h3>
+          <p>Restez concentré !</p>
+          <p>On va passer en revue ce qu'on peut faire en TS</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Types primitifs</h3>
+          <pre><code class="language-typescript">let count: number = 42;
+let name: string = "Alice";
+let isActive: boolean = true;
+let nothing: null = null;
+let notDefined: undefined = undefined;</code></pre>
+          <ul style="font-size: 0.8em">
+            <li>
+              null représente une valeur définis intentionnellement comme vide
+            </li>
+            <li>undefined représente l'absence de valeur attribuée</li>
+            <li>
+              plus d'info
+              <a
+                href="https://web.dev/learn/javascript/data-types/null-undefined?hl=fr"
+                >ici</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Tableaux</h3>
+          <pre><code class="language-typescript" >// &lt;type&gt;[] ou Array&lt;type&gt;
+const ages: number[] = [28, 29];
+const ages2: Array&lt;number&gt; = [28, 29];
+
+// type readonly
+const readonlyNums: ReadonlyArray&lt;number&gt; = [1, 2, 3];
+// readonlyNums.push(4); // Erreur
+
+// Encore plus précis
+let point: [number, number] = [10, 20];
+let entry: [string, number] = ["age", 30];</code></pre>
+
+          <p>
+            Les fonctions dispo sur les tableaux
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array"
+              >ici</a
+            >
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h4>any et unknown</h4>
+          <ul>
+            <li>
+              any: désactive complètement le typage
+              <pre><code class="language-typescript">let valeurAny: any;
+valeurAny.trim();      // ✅ OK, mais dangereux</code></pre>
+            </li>
+            <li>
+              unknown : valeur inconnue mais sûre : oblige de tester le type
+              <pre><code class="language-typescript">let valeurUnknown: unknown;
+// valeurUnknown.trim(); // ❌ Erreur
+if (typeof valeurUnknown === "string") {
+  valeurUnknown.trim(); // ✅OK
+}</code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section
+          style="zoom: 0.9"
+          data-background-image="../assets/fond-blanc.png"
+        >
+          <h3>never</h3>
+          <p>
+            Représente une valeur qui n’arrive jamais<br />Permet au compilateur
+            de garantir que tous les cas sont traités
+          </p>
+
+          <pre
+            style="height: 450px"
+          ><code class="language-ts">// exemple pour une fonction qui throw toujours une erreur
+function uneFonctionNever(): never {
+  throw 'On ne doit jamais passé dedans'
+}
+
+// cas impossible dans un switch
+function process(value: "A" | "B") {
+  switch (value) {
+    case "A": return 1;
+    case "B": return 2;
+    default:
+      const jamais: never = value; 
+      return jamais;
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Inférence de type</h3>
+          <pre><code class="language-typescript">
+let x = 10;         // x: number
+let message = "ok"; // message: string
+
+// Pas besoin de tout typer explicitement
+          </code></pre>
+          <p>Le compilateur peut déduire le type à partir de la valeur.</p>
+          <p style="font-size: 0.8em">(Et ca c'est kiki)</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>! et ?</h3>
+          <pre><code class="language-typescript">//? veut dire peut ou peut ne pas exister
+let x: string | undefined;
+// equivalent à 
+let x?: string;
+
+//! veut dire je suis sur que ca existe
+let y: string | undefined;
+y = 'j'existe'
+let z=y!
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Union types</h3>
+          <pre><code class="language-typescript">
+let id: number | string;
+id = 1;
+id = "abc";
+// id = true;  // Erreur
+          </code></pre>
+          <p>Permet d’accepter plusieurs types possibles.</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Literal types</h3>
+          <pre><code class="language-typescript">
+type Direction = "left" | "right" | "up" | "down";
+
+function move(dir: Direction) {
+  console.log("Moving", dir);
+}
+
+move("left");
+// move("forward"); // Erreur
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Alias de type</h3>
+          <pre><code class="language-typescript">type UserId = number;
+
+type User = {
+  id: UserId;
+  name: string;
+};</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Interfaces</h3>
+          <pre><code class="language-typescript">interface User {
+  id: number;
+  name: string;
+  email?: string;
+}
+
+function printUser(user: User) {
+  console.log(user.name);
+}</code></pre>
+          <p>Inférence de type ici aussi</p>
+          <p>Beaucoup utilisé pour type le retour de WS</p>
+          <pre><code class="language-typescript">const u: User = { id: 1, name: 'Eric' }</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>type vs interface</h3>
+          <ul>
+            <li>
+              <code>interface</code>: extensible, préféré pour les contrats
+              publics (les retours de WS)
+            </li>
+            <li>
+              <code>type</code>: plus flexible (unions, intersections, etc.)
+            </li>
+            <li>Dans beaucoup de cas, ils sont interchangeables</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Propriétés optionnelles & readonly</h3>
+          <pre><code class="language-typescript">
+interface Point {
+  readonly x: number;
+  readonly y: number;
+  label?: string; // équivalent à label: string | undefined
+}
+
+const p1: Point = { x: 1, y: 2 };
+// p1.x = 3; // Erreur
+
+const p2: Point = { x: 5, y: 2, label: 'mon super point' };
+
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Les fonctions</h2>
+          <ul>
+            <li>Function « classique ».</li>
+            <li>Arrow function (depuis ES6).</li>
+          </ul>
+          <pre><code data-trim data-noescape>
+function add1(a: number, b: number): number {
+  return a + b;
+}
+
+const add2: (a: number, b: number) =&gt; number =
+  (a: number, b: number): number =&gt; {
+    return a + b;
+  };
+
+const add3 = (a: number, b: number): number =&gt; a + b;
+      </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Paramètres optionnels / par défaut / varargs</h3>
+          <pre><code class="language-typescript">function salut(name: string = "World") {
+  console.log(`Hello, ${name}`);
+}
+
+salut()         // Affiche : Hello, World
+salut('gringo') // Affiche : Hello, gringo
+
+function logAll(...values: string[]) {
+  values.forEach(console.log);
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Types de fonctions</h3>
+          <pre><code class="language-typescript">const multiply0: (a: number, b: number) =&gt; number =
+  (a: number, b: number): number =&gt; {
+    return a * b;
+  }; // Lisibilité pas ouf
+
+
+type BinaryOp = (a: number, b: number) => number;
+const multiply: BinaryOp = (a, b) => a * b;</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Narrowing avec typeof / instanceof</h3>
+          <pre
+            style="width: 100%; margin: 0"
+          ><code class="language-typescript">function printId(id: number | string) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase()); // Le compilateur sait que c'est un string
+  } else {
+    console.log(id.toFixed(2));    // Et ici un number
+  }
+}</code></pre>
+        </section>
+
+        <section style="zoom: 0.9">
+          <h3>Type guards personnalisés</h3>
+          <pre><code class="language-typescript">interface Chat { miaou(): void; }
+interface Chien { ouaf(): void; }
+
+function isChat(annimal: Chat | Chien): annimal is Chat {
+  return (annimal as Chat).miaou !== undefined;
+}</code></pre>
+          <table style="font-size: 0.9em">
+            <tbody>
+              <tr>
+                <td>A l'exécution</td>
+                <td>La fonction retourne true ou false</td>
+              </tr>
+              <tr>
+                <td>A la compil TS comprend</td>
+                <td>Cette fonction retourne true, alors pet est un Cat</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre><code class="language-typescript">function faireDuBruit(pet: Chat | Chien) {
+  if (isChat(pet)) {
+    pet.miaou(); // TypeScript sait que c'est un Chat
+  } else {
+    pet.ouaf(); // Donc ici c'est un Chien
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Enums</h3>
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <pre><code class="language-typescript">enum Direction {
+  Up,
+  Down,
+  Left,
+  Right,
+}
+
+console.log(Direction.Up)
+// Affiche 0</code></pre>
+
+            <pre><code class="language-typescript">enum Direction {
+  Up = "UP",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT",
+}
+
+console.log(Direction.Up)
+// Affiche "UP"</code></pre>
+          </div>
+          <p style="font-size: 0.8em">Le TS n'existe pas au runtime 😊</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Classes : bases</h3>
+          <pre
+            style="margin: 0; width: 100%"
+          ><code class="language-typescript">class Personne {
+  nom: string;
+
+  constructor(nom: string) {
+    this.nom = nom;
+  }
+
+  direSalut() {
+    console.log(`salut, moi c'est ${this.name}`); // pas oublier le this
+  }
+}</code></pre>
+          <p>⚠️ Pas oublier le "this" (c'est obligatoire pas comme en java)</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Visibilité : public / private / protected</h3>
+          <pre><code class="language-typescript">class Counter {
+  private value = 0;
+
+  public increment() {
+    this.value++;
+  }
+
+  protected reset() {
+    this.value = 0;
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Readonly</h3>
+          <pre><code class="language-typescript">class Voiture {
+  public readonly id: number;
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Parameter properties</h3>
+          <pre><code class="language-typescript">class Produit {
+  constructor(
+    public readonly id: number,
+    public nom: string
+  ) {}
+}</code></pre>
+          C'est la même chose que d'écrire:
+          <pre><code class="language-typescript">class Produit {
+  public readonly id: number;
+  public nom: string;
+  constructor(id: number, nom: string) {
+    this.id = id;
+    this.nom = nom;
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Héritage & classes abstraites</h3>
+          <pre><code class="language-typescript">abstract class Shape {
+  abstract area(): number;
+}
+
+class Square extends Shape {
+  constructor(public size: number) {
+    super();
+  }
+  area() {
+    return this.size * this.size;
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Interfaces & classes</h3>
+          <pre><code class="language-typescript">
+interface Serializable {
+  serialize(): string;
+}
+
+class User implements Serializable {
+  constructor(public name: string) {}
+  serialize() {
+    return JSON.stringify({ name: this.name });
+  }
+}
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Génériques : introduction</h3>
+          <pre><code class="language-typescript">function identity&lt;T&gt;(value: T): T {
+  return value;
+}
+
+const n = identity(42);
+console.log(typeof n) // Affiche 'number'
+
+const s = identity("Hello");
+console.log(typeof s) // Affiche 'string'</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Génériques sur les fonctions</h3>
+          <pre><code class="language-typescript">
+function wrapInArray&lt;T&gt;(value: T): T[] {
+  return [value];
+}
+
+const users = wrapInArray({ id: 1 });
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Génériques sur les interfaces</h3>
+          <div style="display: flex; flex-direction: row; gap: 10px">
+            <pre><code class="language-typescript">interface Page&lt;T&gt; {
+  elements: T[];
+  page: number;
+  pageSize: number;
+  totalElements: number;
+}
+
+interface Produit {
+  id: number;
+  nom: string;
+  prix: number;
+}</code></pre>
+            <pre><code class="language-typescript">// Utilisation avec HttpClient Angular
+@Injectable({ providedIn: "root" })
+export class ProduitService {
+
+  constructor(private http: HttpClient) {}
+
+  getProduits(page: number) {
+    return this.http.get&lt;Page&lt;Produit&gt;&gt;(
+      `/api/produits?page=${page}`
+    );
+  }
+}</code></pre>
+          </div>
+          <ul style="font-size: 0.7em; margin-top: 20px">
+            <li>
+              Le type Page est réutilisable pour n'importe quel type d'élément
+            </li>
+            <li>Vrai exemple d'usage dans Angular</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Contraintes de génériques</h3>
+          <pre><code class="language-typescript">
+interface HasId {
+  id: number;
+}
+
+function getId&lt;T extends HasId&gt;(obj: T) {
+  return obj.id;
+}
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Utility Types standard — Partial</h3>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              gap: 10px;
+              margin-bottom: 50px;
+            "
+          >
+            <pre><code class="language-typescript">
+interface User {
+  id: number;
+  name: string;
+  email?: string;
+  role: "admin" | "user";
+}</code></pre>
+            <pre><code class="language-typescript">@Injectable({ providedIn: "root" })
+export class UserService {
+  private http = inject(HttpClient);
+
+  // Mise à jour partielle d'un utilisateur avec Partial&lt;User&gt;
+  majUtilisateur(user: Partial&lt;User&gt;) {
+    return this.http.patch(`/api/users/${user.id}`, user);
+  }
+}</code></pre>
+          </div>
+          <ul style="font-size: 0.75em">
+            <li>
+              Partial&lt;T&gt; : créer un type avec toutes les propriétés
+              optionnelles
+            </li>
+            <li>Utile pour les mises à jour partielles (PATCH)</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Utility Types standard — Pick</h3>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              gap: 10px;
+              margin-bottom: 50px;
+            "
+          >
+            <pre><code class="language-typescript">
+interface User {
+  id: number;
+  name: string;
+  email?: string;
+  role: "admin" | "user";
+}</code></pre>
+            <pre><code class="language-typescript">type UserPreview = Pick&lt;User, "id" | "name"&gt;;
+
+getUsersLight(users: User[]): UserPreview[] {
+  return users.map(user =&gt; ({
+    id: user.id,
+    name: user.name
+  }));
+}
+
+  </code></pre>
+          </div>
+          <ul style="font-size: 0.75em">
+            <li>
+              Pick&lt;T, K&gt; : créer un type avec seulement certaines
+              propriétés
+            </li>
+            <li>Utile pour les vues « allégées »</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Utility Types standard — Omit</h3>
+
+          <div class="col-2">
+            <pre><code class="language-typescript">
+interface User {
+  id: number;
+  name: string;
+  email?: string;
+  role: "admin" | "user";
+}</code></pre>
+            <pre><code class="language-typescript">type UserPublic = Omit&lt;User, "email"&gt;;
+
+const publicUser: UserPublic = {
+  id: 1,
+  name: "Alice",
+  role: "user"
+};
+</code></pre>
+          </div>
+          <ul style="font-size: 0.75em">
+            <li>
+              Omit&lt;T, K&gt; : créer un type en enlevant certaines propriétés
+            </li>
+            <li>Utile pour les vues « publiques » sans infos sensibles</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Promesses & async/await</h3>
+          <pre><code class="language-typescript">async function getUtilisateurs(url: string): Promise&lt;User[]&gt; {
+  const res = await fetch(url);
+  const data: User[] = await res.json();
+  return data;
+}</code></pre>
+
+          <ul style="font-size: 0.75em">
+            <li>
+              Le type de retour d'une fonction async est toujours une Promise
+            </li>
+            <li>
+              Utiliser le type générique Promise&lt;T&gt; pour typer la valeur
+              résolue
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Modules : import / export</h3>
+          <pre><code class="language-typescript">// math.ts
+export function add(a: number, b: number) {
+  return a + b;
+}
+          </code></pre>
+
+          <pre><code class="language-typescript">// main.ts
+import { add } from "./math"; // Pas de l'extension .ts
+console.log(add(1, 2));</code></pre>
+
+          <ul style="font-size: 0.8em">
+            <li>Pas d'extension .ts le compilateur gère</li>
+            <li>Supporte les modules ESM (import / export)</li>
+          </ul>
+        </section>
+
+        <section
+          style="zoom: 0.9"
+          data-background-image="../assets/fond-blanc.png"
+        >
+          <h3>Dernier truc cool qui va servir en JS/TS</h3>
+          <pre
+            style="height: 450px"
+          ><code class="language-typescript">// destructuration
+let o = {id: 1, nom: "toto", prenom: "titi"}
+let {id, nom, prenom} = o;
+console.log(id) // Affiche 1
+
+// Object
+let cle = Object.key(o)
+console.log(cle) // Affiche 'id','nom','prenom'
+
+// Opérateur spread
+let a = { x: 1, y: 2 }
+let b = { z: 3 }
+
+let fusion = { ...a, ...b }
+
+console.log(fusion) // Affiche { x: 1, y: 2, z: 3 }</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Bibliothèques JS & fichiers d.ts</h3>
+          <pre><code class="language-bash">
+npm install lodash
+npm install -D @types/lodash
+          </code></pre>
+          <ul style="font-size: 0.8em">
+            <li>Les bibliothèques JS n'ont pas de types natifs</li>
+            <ul>
+              <li>Comme <a href="https://lodash.com">lodash</a></li>
+            </ul>
+            <li>Les @types sont sur DefinitelyTyped</li>
+            <ul>
+              <li>Les fichiers <code>.d.ts</code> fournissent les types</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Bonnes pratiques de typage</h3>
+          <ul>
+            <li>Types explicite sur les retour d'API Rest</li>
+            <li>Laisser l’inférence faire le travail en interne</li>
+            <li>Éviter any autant que possible</li>
+            <li>Utiliser unknown + narrowing</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Debug & sourcemaps</h3>
+          <pre><code class="language-json">
+{
+  "compilerOptions": {
+    "sourceMap": true
+  }
+}
+          </code></pre>
+          <p>
+            Permet de déboguer le code TypeScript directement dans les devtools.
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Conclusion</h3>
+          <ul>
+            <li>On n'a pas tout vu 🤠</li>
+            <li>
+              Documentation officielle TypeScript
+              <a href="https://www.typescriptlang.org/fr/docs/">ici</a>
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Convertir notre serveur.js du TP3 et TS</h3>
+          <ol style="font-size: 0.58em">
+            <li>Dans un nouveau dossier tp5</li>
+            <li>
+              Extraire le contenu de ce
+              <a href="../assets/backend-node-ts.zip">zip</a> dans le dossier
+              tp5
+            </li>
+            <li>Faire npm install pour installer les dependances du projet</li>
+            <li>
+              Copier joueurs-process.js, serveur.js et joueur.json dans tp5/src
+            </li>
+            <li>Modifier les fichier *.js en *.ts</li>
+            <li>
+              lancer le programme voir que les url mis en place dans le
+              serveur.ts sont operationnels (si c'est pas le cas, corrigez !)
+            </li>
+            <li>
+              Plus être plus propre; modifier la structure pour avoir ca
+              <pre
+                style="margin: 0; width: 100%"
+              ><code class="language-json">tp4/
+├── node_modules/
+├── src/
+│   ├── process/
+│   │   └── joueurs-process.ts
+│   ├── types/
+│   │   └── joueur.ts
+│   └── serveur.ts
+├── package.json
+├── joueurs.json
+├── package-lock.json
+└── tsconfig.json</code></pre>
+              <p>
+                A partir de maintenant, on va mettre toutes les classes
+                "process" dans le dossier process, les types (interface, enum,
+                etc) dans le dossier types
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (1)</h3>
+          <ol style="width: 100%; font-size: 0.7em">
+            <li>Créer le type joueur, le mettre ou ca va bien</li>
+            <ul>
+              <li>le poste n'est pas une chaine de caractère mais un type</li>
+            </ul>
+            <li>
+              Creer une classe db.process.ts qui travail avec des elements
+              possedant un id, cette classe n'a pas le droit de connaitre joueur
+            </li>
+            <ul>
+              <li>Indication: Les generiques sont vos amis</li>
+            </ul>
+            <li>
+              serveur.ts n'a pas le droit de connaitre db.process.ts, il faut
+              une classe de process intermédiaire
+            </li>
+            <ul>
+              <li>
+                Indication: le typage va être ici très important : le type
+                Joueur ne suffira pas, il faudra potentielement utiliser
+                Partial, Omit, etc
+              </li>
+            </ul>
+            <li>
+              Ajouter dans serveur.ts: ca permet de parser le body des POST en
+              json
+              <pre><code>app.use(express.json());</code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (2)</h3>
+          <ol style="width: 100%; font-size: 0.65em">
+            <li>
+              Creer les fonction du CRUD
+              <ul>
+                <li>
+                  Créer un WS POST permettant d'ajouter un joueur dans la liste
+                  <pre><code>curl -X POST http://localhost:3000/joueurs   -H "Content-Type: application/json"   -d '{
+    "nom": "Finickel",
+    "prenom": "Eric",
+    "age": 24,
+    "poste": "Attaquant",
+    "nbBut": 250
+  }'</code></pre>
+                  <p>
+                    (J'ai pas oublié l'id dans le POST, c'est au systeme de le
+                    calculer)
+                  </p>
+                </li>
+
+                <li>
+                  Créer un WS PATCH pour mettre à jour un joueur
+                  <pre><code>curl -X PATCH http://localhost:3000/joueurs/1   -H "Content-Type: application/json"   -d '{
+    "age": 99,
+    "nbBut": 320
+  }'</code></pre>
+                </li>
+                <li>
+                  Créer un WS DELETE permettant de supprimer un joueur de la
+                  liste
+                  <pre><code>curl -X DELETE http://localhost:3000/joueurs/1</code></pre>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (3)</h3>
+          <ol style="width: 100%; font-size: 0.65em">
+            <li>
+              Créer un WS POST de query qui marche sur n'importe quel champs de
+              Joueur
+            </li>
+            <pre><code>curl -X POST http://localhost:3000/joueurs/q   -H "Content-Type: application/json"   -d '{
+    "nom": "Finickel",
+    "prenom": "Eric"
+  }'</code></pre>
+            <p>Ou</p>
+            <pre><code>curl -X POST http://localhost:3000/joueurs/q   -H "Content-Type: application/json"   -d '{
+    "poste": "Attaquant"
+  }'</code></pre>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (4)</h3>
+          <ol style="width: 100%; font-size: 0.65em">
+            <li>
+              Créer un WS GET de permettant de calculer le moyenne de but pour
+              un poste donnée ou pas
+            </li>
+            <pre><code>curl -X GET http://localhost:3000/joueurs/moyenne-but?poste=Milieu</code></pre>
+            <p>Ou</p>
+            <pre><code>curl -X GET http://localhost:3000/joueurs/moyenne-but</code></pre>
+          </ol>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/highlight/highlight.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        plugins: [RevealHighlight],
+      });
+    </script>
+  </body>
+</html>

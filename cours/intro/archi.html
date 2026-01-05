@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Archi - Master 2 Génie Informatique</title>
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/reveal.js/dist/theme/white.css"
+      id="theme"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css"
+    />
+    <link rel="stylesheet" href="../assets/global.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- TITRE -->
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1>Architecture d'une appli web</h1>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h4>Architecture générale</h4>
+          <pre
+            style="
+              height: 600px;
+              display: flex;
+              justify-content: center;
+              padding-bottom: 45px;
+            "
+          ><code>
+                     +---------------------------------------------+
+                     |      Serveur d'authentification             |
+                     |      (OAuth2 / OpenID Connect)              |
+                     +--------------------+------------------------+
+                                          ^
+                                          |
+                                          |
++-------------------+      Requêtes REST              +--------------------+        SQL
+|   Navigateur      |  -----------------------------> |     Backend        |  --------------+
+|  (Frontend SPA)   |                                 | (API REST / Node,  |                |
+|     Angular       |  <----------------------------- |  Java, .NET, ...)  |                v
++-------------------+      Réponses JSON              +--------------------+     +-----------+
+        ^                                                                        |   BDD     |
+        |                                                                        +-----------+
+        | 
+        +--------  Serveur statique (HTML, CSS, JS)
+                   (1 seule récupération du HTML)</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Architecture générale</h3>
+          <ul>
+            <li>Front-end SPA : Angular</li>
+            <li>Back-end : API REST</li>
+            <li>Communication : HTTP + JSON</li>
+            <li>Stockage : base de données relationnelle ou NoSQL</li>
+            <li>Authentification : JWT / OAuth2</li>
+          </ul>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="font-size: 0.8em"
+        >
+          <h3>Rôle du front-end</h3>
+
+          <ul>
+            <li>
+              Le front-end moderne repose généralement sur le modèle SPA (Single
+              Page Application)
+            </li>
+            <li>
+              Une SPA charge une seule page HTML au démarrage, puis met à jour
+              l’interface dynamiquement sans rechargement complet de la page.
+            </li>
+            <li>
+              il faut voir le front comme un mega template ou sont injectés les
+              données métiers
+            </li>
+          </ul>
+          <p>
+            <a
+              href="https://monagence.uem-metz.fr/#/login"
+              style="
+                margin-top: 1em;
+                display: inline-block;
+                padding: 14px 28px;
+                background: linear-gradient(135deg, #ff6ec7, #7f7cff);
+                color: #ffffff;
+                font-size: 1.1em;
+                font-weight: 600;
+                text-decoration: none;
+                border-radius: 30px;
+                box-shadow: 0 8px 20px rgba(127, 124, 255, 0.35);
+                border: 2px solid rgba(255, 255, 255, 0.4);
+              "
+            >
+              🌈 Exemple
+            </a>
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Rôle du front-end</h3>
+          <ul>
+            <li>Affichage dynamique via composants</li>
+            <li>Routing côté client</li>
+            <li>Appels HTTP vers les API REST</li>
+            <li>
+              Gestion d'état :
+              <ul>
+                <li>Services</li>
+                <li>RxJS (observables, flux asynchrones)</li>
+              </ul>
+            </li>
+            <li>Validation des formulaires</li>
+            <li>Gestion de la session utilisateur (ex : JWT en storage)</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>REST : comment ça marche ?</h3>
+
+          <ul>
+            <li>
+              REST (Representational State Transfer) est un style d’architecture
+              pour concevoir des API
+            </li>
+
+            <li>
+              Le client (front-end) communique avec le serveur via le protocole
+              HTTP.
+            </li>
+
+            <li>
+              Chaque ressource est identifiée par une URL (ex :
+              <code>/joueurs</code>, <code>/joueurs/5</code>).
+            </li>
+
+            <li>
+              Les actions sont définies par les verbes HTTP : GET, POST, PATCH,
+              DELETE
+            </li>
+
+            <li>
+              Le serveur renvoie une réponse :
+              <ul>
+                <li>Un code HTTP (200, 201, 404, 500…)</li>
+                <li>Des données (souvent en JSON)</li>
+              </ul>
+            </li>
+
+            <li>
+              REST est stateless : chaque requête est indépendante (pas de
+              session côté serveur).
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Rôle du serveur REST</h3>
+          <ul>
+            <li>Expose des endpoints (CRUD)</li>
+            <ul>
+              <li>GET : récupérer une ressource sans la modifier</li>
+              <li>POST : créer une nouvelle ressource</li>
+              <li>PATCH : mettre à jour partiellement une ressource</li>
+              <li>DELETE : supprimer une ressource existante</li>
+            </ul>
+            <li>Interagit avec la bdd</li>
+            <li>Gère la logique métier</li>
+            <li>Logs, monitoring, erreurs</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>GET</h3>
+          <p>
+            GET permet de récupérer une ou plusieurs ressources sans modifier
+            l’état du serveur
+          </p>
+          <ul>
+            <li>Lecture seule</li>
+            <li>Peut être mis en cache</li>
+            <li>Idempotent</li>
+          </ul>
+
+          <pre><code class="language-http">
+GET /api/joueurs
+GET /api/joueurs/42
+  </code></pre>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="font-size: 0.9em"
+        >
+          <h3>POST</h3>
+          <p>
+            POST permet de créer une nouvelle ressource ou declencher un
+            traitement
+          </p>
+          <ul>
+            <li>Utilise un body JSON</li>
+            <li>Souvent POST = création et non idempotent</li>
+            <li>En réalité usage très large (voir RFC 9110)</li>
+            <ul>
+              <li>Lancer un calcul complexe</li>
+              <li>Démarrer un processus métier</li>
+              <li>Déclencher un job asynchrone</li>
+              <li>Exécuter une commande</li>
+              <li>Soumettre un formulaire</li>
+              <li>
+                Effectuer une recherche complexe (quand GET serait trop long)
+              </li>
+            </ul>
+          </ul>
+
+          <div class="col-2">
+            <pre><code class="language-http">POST /api/joueurs
+Content-Type: application/json
+
+{
+  "nom": "Mbappé",
+  "poste": "Attaquant"
+}</code></pre>
+            <pre><code class="language-http">POST /api/joueurs/calculMoyenneBut
+Content-Type: application/json
+
+{
+  "poste": "Attaquant"
+}</code></pre>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>DELETE</h3>
+          <p>DELETE permet de supprimer une ressource identifiée</p>
+          <ul>
+            <li>Action irréversible (en général)</li>
+            <li>Idempotent</li>
+            <li>Retourne souvent 204 No Content</li>
+          </ul>
+
+          <pre><code class="language-http">
+DELETE /api/joueurs/42
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Communication Angular ↔ REST</h3>
+          <ol>
+            <li>Le front envoie une requête HTTP (GET, POST, PUT, DELETE)</li>
+            <li>Le serveur valide et traite la requête</li>
+            <li>Le serveur renvoie une réponse JSON</li>
+            <li>Angular met à jour l'UI avec les données reçues</li>
+          </ol>
+          <p>
+            <a
+              href="https://monagence.uem-metz.fr/#/login"
+              style="
+                margin-top: 1em;
+                display: inline-block;
+                padding: 14px 28px;
+                background: linear-gradient(135deg, #ff6ec7, #7f7cff);
+                color: #ffffff;
+                font-size: 1.1em;
+                font-weight: 600;
+                text-decoration: none;
+                border-radius: 30px;
+                box-shadow: 0 8px 20px rgba(127, 124, 255, 0.35);
+                border: 2px solid rgba(255, 255, 255, 0.4);
+              "
+            >
+              🌈 Exemple
+            </a>
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Serveur d'authentification</h3>
+          <p>(OAuth2 / OpenID Connect)</p>
+
+          <ul>
+            <li>Centralise l'identification des utilisateurs</li>
+            <li>Délivre des jetons de sécurité (JWT)</li>
+            <li>Permet au frontend ou backend d'accéder aux API protégées</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h4>Architecture générale</h4>
+          <pre
+            style="
+              height: 600px;
+              display: flex;
+              justify-content: center;
+              padding-bottom: 45px;
+            "
+          ><code>
+                     +---------------------------------------------+
+                     |      Serveur d'authentification             |
+                     |      (OAuth2 / OpenID Connect)              |
+                     +--------------------+------------------------+
+                                          ^
+                                          |
+                                          |
++-------------------+      Requêtes REST              +--------------------+        SQL
+|   Navigateur      |  -----------------------------> |     Backend        |  --------------+
+|  (Frontend SPA)   |                                 | (API REST / Node,  |                |
+|     Angular       |  <----------------------------- |  Java, .NET, ...)  |                v
++-------------------+      Réponses JSON              +--------------------+     +-----------+
+        ^                                                                        |   BDD     |
+        |                                                                        +-----------+
+        | 
+        +--------  Serveur statique (HTML, CSS, JS)
+                   (1 seule récupération du HTML)</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Pourquoi les bonnes pratiques ?</h3>
+          <ul>
+            <li>Code plus lisible</li>
+            <li>Moins de bugs</li>
+            <li>Facilite l'évolution de l'application</li>
+            <li>Meilleure longévité du logiciel</li>
+            <li>Indispensable pour travailler en équipe</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Les principes SOLID</h3>
+          <ul>
+            <li>Single Responsibility</li>
+            <li>Open/Closed</li>
+            <li>Liskov Substitution</li>
+            <li>Interface Segregation</li>
+            <li>Dependency Inversion</li>
+          </ul>
+          <p>Objectif : concevoir un code flexible, modulaire et robuste.</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>S — Single Responsibility</h3>
+          <p>Une classe / un module doit avoir une seule responsabilité.</p>
+          <ul>
+            <li>Facilite les tests</li>
+            <li>Réduit le couplage</li>
+            <li>Évite les "classes fourre-tout"</li>
+          </ul>
+          <p>
+            <br />
+            Traduction: faire des petits LEGO pour les emboîter
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>O — Open/Closed</h3>
+          <p>Les modules doivent être :</p>
+          <ul>
+            <li>Ouverts à l'extension</li>
+            <li>Fermés à la modification</li>
+          </ul>
+          <p>
+            <br />
+            Traduction: si tu dois casser tout ton code pour ajouter une
+            feature, c'est que tu t'es mal débrouillé
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>L — Liskov Substitution</h3>
+          <p>
+            Une classe dérivée doit pouvoir remplacer sa classe parente sans
+            casser le comportement attendu.
+          </p>
+          <p>
+            <br />
+            Traduction: si tu remplaces un objet par un autre censé être
+            compatible, tout doit continuer à fonctionner normalement
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>I — Interface Segregation</h3>
+          <p>
+            Préférer plusieurs petites interfaces à une grosse interface
+            générale.
+          </p>
+          <ul>
+            <li>Moins de méthodes inutiles pour les implémentations</li>
+            <li>Responsabilités plus claires</li>
+          </ul>
+
+          <p>
+            <br />
+            Traduction: Une classe qui implemente une interface mais qui ne se
+            sert pas de tout les méthode a implementer c'est pourri
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>D — Dependency Inversion</h3>
+          <ul>
+            <li>Injection de dépendances</li>
+            <li>Couplage réduit</li>
+            <li>Tests unitaires simplifiés (mocks / stubs)</li>
+          </ul>
+          <p>En Angular : services injectés via le système d'injector</p>
+          <p>
+            <br />
+            Traduction: Ne te marie pas avec une implémentation
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Principe KISS</h3>
+          <p>Garder les choses aussi simples que possible</p>
+          <ul>
+            <li>Favoriser des solutions claires plutôt que "malines"</li>
+            <li>Éviter la complexité inutile</li>
+            <li>Rendre le code lisible pour n'importe quel développeur</li>
+            <li>Faciliter la maintenance et l'évolution</li>
+          </ul>
+          <p>
+            Traduction : Quand tu lis du code ca doit être clair comme de l'eau
+            de roche
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <img src="../assets/clean-code.jpg" style="width: 50%" />
+        </section>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+    <script src="https://unpkg.com/reveal.js/plugin/highlight/highlight.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        width: "100%",
+        height: "100%",
+        plugins: [RevealHighlight],
+      });
+    </script>
+  </body>
+</html>

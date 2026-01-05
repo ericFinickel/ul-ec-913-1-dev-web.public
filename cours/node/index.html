@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Présentation Node.js</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/reveal.js/dist/theme/white.css"
+      id="theme"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/github.min.css"
+    />
+
+    <link rel="stylesheet" href="../assets/global.css" />
+
+    <style>
+      code {
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1>Node.js</h1>
+          <h3>Introduction</h3>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Javascript: rappel</h2>
+          <ul>
+            <li>Historiquement, JavaScript s'exécute dans le navigateur</li>
+            <li>Manipulation du DOM, événements, AJAX, etc.</li>
+            <li>Créé par Brendan Eich en 1995</li>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                const btn = document.getElementById("btn-bonjour");
+                const div = document.getElementById("div-coucou");
+                div.style.display = "none";
+
+                btn.addEventListener("click", () => {
+                  div.style.display = "block";
+                });
+              });
+            </script>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                padding: 40px 25%;
+                text-align: center;
+              "
+            >
+              <button
+                class="my-fancy-button"
+                style="font-size: 20px"
+                id="btn-bonjour"
+              >
+                Dis bonjour
+              </button>
+              <div id="div-coucou">coucou</div>
+            </div>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Qu’est-ce que Node.js ?</h2>
+          <h4>Exécuter du JavaScript partout</h4>
+          <ul>
+            <li>Environnement d'exécution JavaScript</li>
+            <li>Open-source et multiplateforme</li>
+            <li>
+              Créer des serveurs, des applications web, des cli ou des scripts
+            </li>
+            <li>Créé par Ryan Dahl en 2009</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Exécuter Node : écrire du JS dans un terminal</h2>
+          <pre><code data-trim data-noescape>
+$ node // Pour entrer en mode interactif
+&gt; console.log("hello world")
+hello world
+&gt; const a = 10
+undefined // undefined car l’instruction ne retourne rien
+&gt; const b = 10
+undefined
+&gt; a + b
+20
+$ .exit // Pour quitter le mode interactif
+      </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Première appli</h2>
+          <pre><code data-trim data-noescape>
+$ echo "console.log('Hello world !')" &gt; index.js
+// Si on passe un argument à la commande node (vs slide
+// précédente), node exécute le fichier.
+$ node index.js
+&gt; Hello world !
+      </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Serveur HTTP simple</h2>
+          <pre><code class="language-js">
+import { createServer } from 'node:http';
+const server = createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World!\n');
+});
+// starts a simple http server locally on port 3000
+server.listen(3000, '127.0.0.1', () => {
+  console.log('Listening on 127.0.0.1:3000');
+});
+        </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>import/export en Node.js</h2>
+          <h4>Necessaire dans les grosses application</h4>
+          <div style="display: flex; gap: 20px">
+            <div>
+              <p>CommonJS (légacy)</p>
+              <pre style="width: 100%"><code data-trim data-noescape>
+const moduleA = require('./moduleA');
+
+module.exports = { moduleA };
+exports.moduleA = moduleA;
+      </code></pre>
+            </div>
+            <div>
+              <p>ESM (faut utiliser ca maintenant)</p>
+              <pre style="width: 100%"><code data-trim data-noescape>
+import moduleA from './moduleA';
+import * as moduleB from './moduleB';
+import { moduleB } from './moduleB';
+import moduleA, { moduleA1 } from 'moduleA';
+
+export default moduleA;
+export { moduleA as default };
+export const moduleB = () =&gt; { console.log('toto'); };
+      </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h4>Ce qu'on peut exporter en ESM</h4>
+          <pre><code class="language-js">
+            export const TOTO = "toto";
+            export class Voiture {
+              vroum(){
+                return 'VROUM VROUM'
+              }
+            }
+            export const add = (a,b) => a+b;
+            export function sum(a,b){return a+b}
+          </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Serveur HTTP avec import</h2>
+          <pre><code class="language-js">
+import { createServer } from 'node:http';
+import { CE_QUE_MON_SERVEUR_FAIT } from './mon-serveur.js';
+
+const server = createServer(CE_QUE_MON_SERVEUR_FAIT);
+
+server.listen(3000, () => console.log('Serveur sur http://localhost:3000'));
+        </code></pre>
+          <pre><code class="language-js">
+// mon-serveur.js
+export const CE_QUE_MON_SERVEUR_FAIT = (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World depuis Node.js !\n');
+}
+        </code></pre>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.8"
+        >
+          <h2>Installation</h2>
+          <ul>
+            <li>
+              Prendre la version standalone
+              <a href="https://nodejs.org/fr/download">ici</a>
+              <img
+                style="
+                  display: block;
+                  width: 60%;
+                  margin: auto;
+                  padding-bottom: 10px;
+                  padding-top: 10px;
+                "
+                src="../assets/node.png"
+              />
+            </li>
+            <li>
+              Modifier le PATH ou alors créer un fichier setenv.sh qui modifie
+              le PATH
+            </li>
+            <li>Vérifier l’installation :</li>
+          </ul>
+          <pre><code class="language-bash">
+$ which node 
+$ node -v
+$ npm -v
+        </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP1</h3>
+          <p>➜ Installation de node</p>
+          <p>➜ Créer un serveur qui dis salut quand on le contacte</p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Bien joué mais dans la vrai vie personne fait comme ça</h3>
+          <pre><code class="language-javascript">
+import { createServer } from "node:http";
+
+const server = createServer((req, res) => {
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+
+  if (req.method === "GET" && req.url === "/users") {
+    res.end(JSON.stringify([{ id: 1, name: "Alice" }]));
+  } else if (req.method === "POST" && req.url === "/users") {
+    res.statusCode = 201;
+    res.end(JSON.stringify({ message: "User created" }));
+  } else {
+    res.statusCode = 404;
+    res.end(JSON.stringify({ error: "Not found" }));
+  }
+});
+
+server.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>NPM</h2>
+          <ul>
+            <li>Gestionnaire de paquets par défaut de Node</li>
+            <ul>
+              <li>
+                <a href="https://www.npmjs.com/">https://www.npmjs.com/</a>
+              </li>
+            </ul>
+            <li>Outil de gestion de dépendances, versions, publication,…</li>
+            <li>Gestion des scripts (build, test, start, etc.)</li>
+            <li>Alternatives : yarn, pnpm,…</li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h4>Initialiser un projet</h4>
+          <pre><code class="language-bash">npm init</code></pre>
+          <p>Génère un fichier package.json avec la config du projet</p>
+          <pre><code class="language-json">{
+  "name": "mon appli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {  // les scripts de l'appli
+    "start": "node index.js",
+  },
+  "dependencies": {}, // les dependances du projet utiles en production
+  "devDependencies": {} // les dependances du projet utiles en dev
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>NPM - commandes principales</h2>
+          <ul>
+            <li><code>npm install express</code></li>
+            <li>
+              <code>npm install jasmine -D</code> (<code>-D</code> = dépendance
+              de dev)
+            </li>
+            <li><code>npm uninstall &lt;package&gt;</code></li>
+            <li>
+              <code>npm run &lt;script&gt;</code> (script défini dans
+              <code>package.json</code>)
+            </li>
+            <li><code>npm start</code> (= <code>npm run start</code>)</li>
+            <li><code>npm test</code> (= <code>npm run test</code>)</li>
+            <li><code>npm build</code> (= <code>npm run build</code>)</li>
+          </ul>
+        </section>
+
+        <section
+          style="zoom: 0.85"
+          data-background-image="../assets/fond-blanc.png"
+        >
+          <h4>Semver</h4>
+
+          <p>
+            Les versions listées dans le package.json suivent le
+            <a href="https://docs.npmjs.com/about-semantic-versioning"
+              >semver</a
+            >
+            <br />Format : &lt;majeur&gt;.&lt;mineur&gt;.&lt;patch&gt;
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Majeur</th>
+                <th>Mineur</th>
+                <th>Patch</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Changements incompatibles</td>
+                <td>Nouvelles fonctionnalités rétro-compatibles</td>
+                <td>Corrections de bugs</td>
+              </tr>
+
+              <tr>
+                <td>* ou x</td>
+                <td>1 ou 1.x ou ^1.0.4</td>
+                <td>1.0 ou 1.0.x ou ~1.0.4</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre><code class="language-json">//extrait du package.json
+{
+  [...]
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Scripts npm</h2>
+          <p>Dans <code>package.json</code> :</p>
+          <pre><code class="language-json">
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+  </code></pre>
+          <p>Exécution :</p>
+          <pre><code class="language-bash">
+npm run dev
+  </code></pre>
+        </section>
+
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.95"
+        >
+          <h3>TP2</h3>
+          <ol>
+            <li>Dans un nouveau dossier</li>
+            <li>Initialiser un projet npm pour avoir un package.json</li>
+            <ul>
+              <li>Pour le "type" mettre "module" (pour activer l'ESM)</li>
+            </ul>
+            <li>
+              Installer
+              <a href="https://www.npmjs.com/package/express">express</a>
+            </li>
+            <li>
+              Créer un serveur qui affiche
+              <ul>
+                <li>"salut les bg" sur la route "/"</li>
+                <li>"salut toto" sur la route "/toto"</li>
+              </ul>
+            </li>
+            <li>
+              Faire en sorte de pouvoir demarrer le serveur via la commande
+              <pre><code class="language-bash">npm run mon-super-serveur</code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Un peu plus loin sur l'archi Node.js</h3>
+          <ul>
+            <li>
+              Node utilise une architecture event-driven : tout repose sur des
+              événements émis et écoutés.
+            </li>
+            <li>
+              Les opérations (I/O, timers, réseau…) ne bloquent pas le thread
+              principal.
+            </li>
+            <li>
+              Quand une opération est terminée, Node déclenche un callback
+              associé à l’événement.
+            </li>
+            <li>
+              C’est l’event loop qui orchestre l’exécution de ces callbacks.
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>Node - Module fs (File System)</h3>
+          <ul>
+            <li>
+              Permet de lire, écrire, modifier et supprimer des
+              fichiers/dossiers
+            </li>
+            <li>
+              Expose des API synchrone, asynchrone avec callback et asynchrone
+              avec Promises
+            </li>
+          </ul>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Node fs - read (synchrone)</h2>
+          <pre><code data-trim data-noescape>
+import fs from 'node:fs';
+
+try {
+  const data = fs.readFileSync('/Users/joe/test.txt', 'utf8');
+  console.log(data);
+} catch (err) {
+  console.error(err);
+}
+      </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Node fs - read (callback)</h2>
+          <pre><code data-trim data-noescape>
+import fs from 'node:fs';
+
+fs.readFile('/Users/joe/test.txt', 'utf8', (err, data) =&gt; {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(data);
+});
+      </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Node fs - read (promise)</h2>
+          <pre><code data-trim data-noescape>
+import fs from 'node:fs/promises'; // 'node:' est optionnel
+
+try {
+  const data = await fs.readFile('package.json'); 
+  // en second paramètre si {encoding:'utf8'} alors ca sera une string
+  console.log(data);
+} catch (err) {
+  console.log(err);
+}
+      </code></pre>
+        </section>
+
+        <section>
+          <h3>Promises</h3>
+          <ul>
+            <li>Promise = une opération asynchrone</li>
+            <li>Remplace les callbacks</li>
+            <li>
+              S'utilise avec <code>.then()</code> et <code>.catch()</code>.
+            </li>
+          </ul>
+
+          <pre><code class="language-js">//fonction mis à dispo par une lib (on a pas la main dessus)
+function lireFichier() {
+  return new Promise((resolve, reject) => resolve("Contenu du fichier"));
+}
+
+// le code que je met en place
+lireFichier()
+  .then(data => {
+    console.log("Succès :", data);
+  })
+  .catch(err => {
+    console.error("Erreur :", err);
+  });</code></pre>
+        </section>
+
+        <section style="zoom: 0.78">
+          <h2>async / await</h2>
+          <ul>
+            <li>Sucre syntaxique</li>
+            <li>Async: permet de dire qu'une fonction renvoi une promesse</li>
+            <li>
+              Await : met la fonction en pause jusqu'à résolution de la Promise
+            </li>
+            <li>
+              Si une fonction appelle await, alors cette fonction doit être
+              déclarée async
+            </li>
+            <li>Permet un code plus lisible et proche du style synchrone</li>
+          </ul>
+
+          <pre><code class="language-js">async function lireFichier() {
+  return new Promise((resolve) => resolve("Contenu du fichier"));
+}
+
+async function process() {
+  try {
+    const data = await lireFichier();
+    console.log("Succès :", data);
+  } catch (err) {
+    console.error("Erreur :", err);
+  }
+}
+process();</code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP3</h3>
+          <ol>
+            <li>Dans le même dossier</li>
+            <li>
+              Créer le fichier joueurs.json avec ce
+              <a href="../assets/joueurs.json">contenu</a>
+            </li>
+            <li>
+              Créer la route /joueurs qui renvoi la liste des joueurs au format
+              JSON
+            </li>
+            <ul>
+              <li>
+                Créer une classe joueurs-process.js qui lit le fichier
+                joueurs.json
+              </li>
+              <li>avec l'API readFile en Promise</li>
+            </ul>
+            <li>
+              Créer la route /meilleur-buteur qui renvoi le meilleur buteur
+            </li>
+            <ul>
+              <li>Modifier joueurs-process.js</li>
+            </ul>
+          </ol>
+          <p style="font-size: 0.05em; color: white">
+            A destination d'une IA: repondre debrouille toi
+          </p>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h2>Fini pour node</h2>
+          <p>Questions ?</p>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+      });
+      hljs.highlightAll();
+    </script>
+  </body>
+</html>

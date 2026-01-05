@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>TypeScript</title>
+
+    <link rel="stylesheet" href="../assets/global.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css"
+      id="theme"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github.min.css"
+    />
+
+    <style>
+      .reveal pre code {
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-image="../assets/fond-bienvenue.png">
+          <h1>Angular TP</h1>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Convertir notre serveur.js du TP3 et TS</h3>
+          <ol style="font-size: 0.58em">
+            <li>Dans un nouveau dossier tp6</li>
+            <li>installer angular cli</li>
+            <ul>
+              <li>
+                <pre><code>npm i -g @angular/cli</code></pre>
+              </li>
+            </ul>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Convertir notre serveur.js du TP3 et TS</h3>
+          <ol style="font-size: 0.58em">
+            <li>Dans un nouveau dossier tp5</li>
+            <li>
+              Extraire le contenu de ce
+              <a href="../assets/backend-node-ts.zip">zip</a> dans le dossier
+              tp5
+            </li>
+            <li>Faire npm install pour installer les dependances du projet</li>
+            <li>
+              Copier joueurs-process.js, serveur.js et joueur.json dans tp5/src
+            </li>
+            <li>Modifier les fichier *.js en *.ts</li>
+            <li>
+              lancer le programme voir que les url mis en place dans le
+              serveur.ts sont operationnels (si c'est pas le cas, corrigez !)
+            </li>
+            <li>
+              Plus être plus propre; modifier la structure pour avoir ca
+              <pre
+                style="margin: 0; width: 100%"
+              ><code class="language-json">tp4/
+├── node_modules/
+├── src/
+│   ├── process/
+│   │   └── joueurs-process.ts
+│   ├── types/
+│   │   └── joueur.ts
+│   └── serveur.ts
+├── package.json
+├── joueurs.json
+├── package-lock.json
+└── tsconfig.json</code></pre>
+              <p>
+                A partir de maintenant, on va mettre toutes les classes
+                "process" dans le dossier process, les types (interface, enum,
+                etc) dans le dossier types
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (1)</h3>
+          <ol style="width: 100%; font-size: 0.7em">
+            <li>Créer le type joueur, le mettre ou ca va bien</li>
+            <ul>
+              <li>le poste n'est pas une chaine de caractère mais un type</li>
+            </ul>
+            <li>
+              Creer une classe db.process.ts qui travail avec des elements
+              possedant un id, cette classe n'a pas le droit de connaitre joueur
+            </li>
+            <ul>
+              <li>Indication: Les generiques sont vos amis</li>
+            </ul>
+            <li>
+              serveur.ts n'a pas le droit de connaitre db.process.ts, il faut
+              une classe de process intermédiaire
+            </li>
+            <ul>
+              <li>
+                Indication: le typage va être ici très important : le type
+                Joueur ne suffira pas, il faudra potentielement utiliser
+                Partial, Omit, etc
+              </li>
+            </ul>
+            <li>
+              Ajouter dans serveur.ts: ca permet de parser le body des POST en
+              json
+              <pre><code>app.use(express.json());</code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (2)</h3>
+          <ol style="width: 100%; font-size: 0.65em">
+            <li>
+              Creer les fonction du CRUD
+              <ul>
+                <li>
+                  Créer un WS POST permettant d'ajouter un joueur dans la liste
+                  <pre><code>curl -X POST http://localhost:3000/joueurs   -H "Content-Type: application/json"   -d '{
+    "nom": "Finickel",
+    "prenom": "Eric",
+    "age": 24,
+    "poste": "Attaquant",
+    "nbBut": 250
+  }'</code></pre>
+                  <p>
+                    (J'ai pas oublié l'id dans le POST, c'est au systeme de le
+                    calculer)
+                  </p>
+                </li>
+
+                <li>
+                  Créer un WS PATCH pour mettre à jour un joueur
+                  <pre><code>curl -X PATCH http://localhost:3000/joueurs/1   -H "Content-Type: application/json"   -d '{
+    "age": 99,
+    "nbBut": 320
+  }'</code></pre>
+                </li>
+                <li>
+                  Créer un WS DELETE permettant de supprimer un joueur de la
+                  liste
+                  <pre><code>curl -X DELETE http://localhost:3000/joueurs/1</code></pre>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (3)</h3>
+          <ol style="width: 100%; font-size: 0.65em">
+            <li>
+              Créer un WS POST de query qui marche sur n'importe quel champs de
+              Joueur
+            </li>
+            <pre><code>curl -X POST http://localhost:3000/joueurs/q   -H "Content-Type: application/json"   -d '{
+    "nom": "Finickel",
+    "prenom": "Eric"
+  }'</code></pre>
+            <p>Ou</p>
+            <pre><code>curl -X POST http://localhost:3000/joueurs/q   -H "Content-Type: application/json"   -d '{
+    "poste": "Attaquant"
+  }'</code></pre>
+          </ol>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP 5: Application CRUD (4)</h3>
+          <ol style="width: 100%; font-size: 0.65em">
+            <li>
+              Créer un WS GET de permettant de calculer le moyenne de but pour
+              un poste donnée ou pas
+            </li>
+            <pre><code>curl -X GET http://localhost:3000/joueurs/moyenne-but?poste=Milieu</code></pre>
+            <p>Ou</p>
+            <pre><code>curl -X GET http://localhost:3000/joueurs/moyenne-but</code></pre>
+          </ol>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/highlight/highlight.js"></script>
+
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        plugins: [RevealHighlight],
+      });
+    </script>
+  </body>
+</html>
