@@ -325,7 +325,7 @@
           style="zoom: 0.75"
         >
           <h3>Plan de cours</h3>
-          <app-plan completed="0"></app-plan>
+          <app-plan completed="-1"></app-plan>
         </section>
 
         <section data-background-image="../assets/fond-bienvenue.png">
@@ -560,9 +560,6 @@ app.config.ts                                  +        AppComponent  &lt;app-ro
             <li>Bloc fondamental de toute application Angular</li>
             <li>C'est ce que voit l'utilisateur</li>
             <li>Représente une partie d'une page web</li>
-            <li>
-              Structurent l'application en parties maintenables et évolutives
-            </li>
             <li>Un composant contient :</li>
             <ul>
               <li>Un décorateur @Component avec sa configuration</li>
@@ -699,20 +696,52 @@ export class UserBiography {}
         </section>
 
         <section data-background-image="../assets/fond-blanc.png">
+          <h3>TP6(b)</h3>
+          <ul>
+            <li>Mettre en place cette arborescences</li>
+          </ul>
+          <pre><code class="language-text">
+tp6
+...
+├─ src
+│  ├─ app
+│  │  ├─ core/                        // services singleton, logique transverse
+│  │  │  ├─ services/
+│  │  │  └─ guards/
+│  │  ├─ pages/                       // pages de l'appli
+│  │  ├─ features/                    // domaines fonctionnels (lazy loading)
+│  │  │  ├─ entete/
+│  │  │  └─ &lt;...&gt;
+│  │  ├─ shared/                      // composants et utilitaires réutilisables
+│  │  │  └─components/
+│  │  ├─ app.routes.ts                // routage principal 
+│  │  └─ app.component.ts             // composant racine  
+...
+  </code></pre>
+        </section>
+
+        <section data-background-image="../assets/fond-blanc.png">
           <h3>TP7</h3>
           <ol>
             <li>Dans le même dossier que pour le TP6</li>
-            <li>Créer un composant "Header" avec la cli</li>
-            <li>Afficher "Ma super application" dans le template</li>
             <li>
-              Inclure le Header dans le template du composant racine (app.ts)
+              Créer un composant "Entete" avec la cli qui affiche "Ma super
+              application"
+            </li>
+            <li>
+              Inclure Entete dans le template du composant racine (app.ts)
             </li>
             <li>Vérifier que le message s'affiche dans l'application</li>
             <li>
-              Faire en sorte que le Header prenne toute la largeur de l'écran
+              Faire en sorte que Entete prenne toute la largeur de l'écran
             </li>
-            <li>Ajouter un style de fond au Header</li>
-            <li>Ajouter du contenu dans une balise main</li>
+            <li>
+              Ajouter un style de fond et un peu de padding au composant Entete
+            </li>
+            <li>Créer un composant "Contenu" avec une balise</li>
+            <li>
+              Ajouter une balise main dans app qui contient le composant Contenu
+            </li>
           </ol>
           <p><img src="../assets/tp7.png" alt="" /></p>
         </section>
@@ -754,7 +783,7 @@ export class Salut {
 <h3>{{titre()}}</h3>
 
 // Property binding : lier une propriété d'un élément HTML à une propriété du composant
-<button (click)="changerLeTitre()" [disabled]="titreAChange()">Changer le titre</button>
+<button [disabled]="titreAChange()">Changer le titre</button>
 
 // Event binding : lier un événement d'un élément HTML à une méthode du composant
 <button (click)="changerLeTitre()">Changer le titre</button>
@@ -800,10 +829,19 @@ export class UserProfile {
           </ul>
         </section>
 
-        <section data-background-image="../assets/fond-blanc.png">
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.95"
+        >
           <h2>Top des property bindings Angular</h2>
 
           <table class="compact-table">
+            <colgroup>
+              <col style="width: 20%" />
+              <col style="width: 30%" />
+              <col style="width: 50%" />
+            </colgroup>
+
             <thead>
               <tr>
                 <th>Property binding</th>
@@ -885,11 +923,6 @@ export class UserProfile {
               </tr>
             </tbody>
           </table>
-
-          <p>
-            Property binding : Angular écrit directement sur la propriété DOM,
-            typée et utilisée par le navigateur.
-          </p>
         </section>
 
         <section data-background-image="../assets/fond-blanc.png">
@@ -923,6 +956,11 @@ export class UserProfile {
           <h2>Top événements DOM essentiels</h2>
 
           <table class="compact-table">
+            <colgroup>
+              <col style="width: 20%" />
+              <col style="width: 30%" />
+              <col style="width: 50%" />
+            </colgroup>
             <thead>
               <tr>
                 <th>Événement</th>
@@ -996,11 +1034,6 @@ export class UserProfile {
               </tr>
             </tbody>
           </table>
-
-          <p>
-            Angular expose directement les événements natifs du DOM via la
-            syntaxe (event)
-          </p>
         </section>
 
         <section data-background-image="../assets/fond-blanc.png">
@@ -1094,8 +1127,45 @@ export class CardComponent {}
         <section data-background-image="../assets/fond-blanc.png">
           <h2>TP8</h2>
           <ul>
-            <li>interpolation/controlflow/propertiy binding/ng content</li>
-            <li>parcourir une liste</li>
+            <li>
+              Ajouter un titre "Bienvenue" dans le code TS de Contenu et
+              l'afficher dans l'HTML
+            </li>
+            <li>Ajouter un titre "TP8" dans le HTML de Contenu</li>
+
+            <li>
+              Créer un composant PropertyEtEventBinding et l'ajouter sous le
+              HTML du composant Main
+            </li>
+            <ul>
+              <li>
+                Ajouter un bouton et une checkbox. Au clic sur le bouton, il
+                faut que la checkbox s'active ou se désactive.
+              </li>
+            </ul>
+
+            <li>
+              Créer un composant Carte et utiliser ng-content pour y injecter
+              des données. Mettre en place une carte dans le HTML du composant
+              Contenu qui affiche PropertyEtEventBinding.
+            </li>
+
+            <li>
+              Créer un composant ListePersonnes. Créer une liste de personnes
+              (dans le TS) avec un nom et un âge, puis afficher cette liste dans
+              une balise ul/li.
+            </li>
+
+            <li>
+              Créer un composant CouleurCestBeau. Créer un select HTML contenant
+              "vide" ou "rouge". Lorsque le select vaut "rouge", afficher le
+              texte "c'est trop beau".
+            </li>
+
+            <li>
+              Ajouter du padding, des marges et une bordure dans le composant
+              Carte et améliorer la mise en page des différentes cartes.
+            </li>
           </ul>
         </section>
 
@@ -1216,7 +1286,23 @@ effect(() => {
         <section data-background-image="../assets/fond-blanc.png">
           <h2>TP9</h2>
           <ul>
-            <li>signal</li>
+            <li>Ajouter un titre "TP9" dans le HTML de Contenu</li>
+
+            <li>
+              Créer un composant ChiffreLePlusGrand et l’afficher dans une carte
+            </li>
+
+            <li>
+              Créer un champ input de type number et un bouton « Ajouter ». Au
+              clic sur le bouton « Ajouter », le chiffre renseigné dans l’input
+              est ajouté à une liste de nombres.
+            </li>
+
+            <li>
+              Créer dans le template HTML deux colonnes : <br />– une colonne
+              contenant la liste des nombres ; <br />– une autre colonne
+              affichant le plus grand chiffre de la liste.
+            </li>
           </ul>
         </section>
 
@@ -1316,7 +1402,36 @@ export class CounterComponent {
         <section data-background-image="../assets/fond-blanc.png">
           <h2>TP10</h2>
           <ul>
-            <li>signal</li>
+            <li>Ajouter un titre "TP10" dans le HTML de Contenu</li>
+
+            <li>
+              Créer un composant DetailPersonne et l’afficher dans une carte
+            </li>
+
+            <li>Modifier le composant ListePersonnes</li>
+            <ul>
+              <li>
+                Ajouter un bouton « Voir » à la fin de chaque personne de la
+                liste. Ce bouton s’affiche uniquement si l’input
+                "afficherBoutonVoir" vaut true (par défaut, le mettre à false).
+              </li>
+
+              <li>
+                Au clic, un output event de type "Personne" (à créer) est émis
+                avec la personne sélectionnée.
+              </li>
+
+              <li>
+                Ajouter une autre carte contenant le composant ListePersonnes
+                dans Contenu. Le deuxième composant ListePersonnes doit avoir
+                "afficherBoutonVoir" à true.
+              </li>
+
+              <li>
+                Le composant DetailPersonne doit afficher la personne
+                sélectionnée.
+              </li>
+            </ul>
           </ul>
         </section>
 
@@ -1464,1760 +1579,55 @@ export class CounterComponent {
         <section data-background-image="../assets/fond-blanc.png">
           <h2>TP11</h2>
           <ul>
-            <li>service, arbre de service, service local, store</li>
-          </ul>
-        </section>
+            <li>Ajouter un titre "TP11" dans le HTML de Contenu</li>
 
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
-            Services - HTTP
-          </h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="7" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Service HTTP</h2>
-          <p>C'est un service pour communiquer avec un serveur</p>
-          <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
-export class UserService {
-  constructor(private http: HttpClient) {}
-
-  getUsers() {
-    return this.http.get&lt;User[]&gt;('/api/users');
-  }
-}</code></pre>
-
-          <pre><code class="language-ts">//main.ts
-bootstrapApplication(AppComponent, {
-  providers: [
-    provideHttpClient() // Fournit HttpClient dans l'application
-  ]
-});</code></pre>
-          <ul>
-            <li>Marche via provideHttpClient() dans main.ts</li>
-            <li>Utilise RxJS (Observables) pour les appels asynchrones</li>
-            <li>Supporte les requêtes GET, POST, PUT, DELETE, etc.</li>
-            <li>Gère les en-têtes, les paramètres, les erreurs, etc.</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>RxJS</h2>
-          <ul>
-            <li>C'est un library pour la programmation réactive</li>
-            <ul>
-              <li>Gérer des flux de données asynchrones</li>
-            </ul>
-            <li>Historique en Angular (depuis le début)</li>
-            <li class="difficulty-of-death-lite">
-              Pas simple à maîtriser !!!!!!!!!!!!!!
-            </li>
-            <li style="margin-top: 0.3em">Mais pour le moment pas le choix</li>
-            <ul>
-              <li>L'API HTTP Angular retourne des Observables</li>
-              <li>Appel http en parrallèle a la suite...</li>
-              <li>Programmation réactive avancée</li>
-            </ul>
-          </ul>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.9"
-        >
-          <h3>Les concepts clés</h3>
-
-          <ul>
-            <li>Observable : source de données dans le temps</li>
-            <li>Observer : consomme les données</li>
-            <li>Subscription : lien entre les deux</li>
-          </ul>
-
-          <pre><code class="language-ts">// Créer un observable qui émet 3 valeurs puis se termine
-const observable = new Observable(subscriber => {
-  subscriber.next(1); // Émettre des valeurs
-  subscriber.next(2);
-  subscriber.next(3); 
-  subscriber.complete(); // Indique la fin de l'émission
-});
-
-// S'abonner à l'observable pour consommer les valeurs
-observable.subscribe({
-  next: value => console.log(value),            // Gérer chaque valeur émise
-  error: err => console.error('Erreur :', err), // Gérer les erreurs
-  complete: () => console.log('Terminé')        // Gérer la fin de l'émission
-});
-
-// Sortie attendue :
-// 1
-// 2
-// 3
-// Terminé</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Les opérateurs</h3>
-
-          <ul>
             <li>
-              De plusieurs types : création, transformation, filtrage,
-              combinaison
+              Créer un composant ListePersonnesAvecService et l’afficher dans
+              une carte
             </li>
-            <li>Utilisés avec la méthode pipe() des observables</li>
+
+            <li>Créer un service PersonneService</li>
+
             <li>
-              Permettent de composer des opérations sur les flux de données
+              Désormais, c’est PersonneService qui doit connaître la liste des
+              personnes : créer une liste (pas encore dans un signal pour
+              commencer).
             </li>
-            <li>Exemples courants :</li>
-            <ul>
-              <li>map : transformer les valeurs</li>
-              <li>filter : filtrer les valeurs</li>
-            </ul>
-          </ul>
-          <pre><code class="language-ts">of(1, 2, 3, 4)                                 // Observable qui émet 1, 2, 3, 4
-.pipe(                                         // Appliquer des opérateurs avec pipe()
-  filter(n => n % 2 === 0),                    // Garder que les nombres pairs
-  map(n => n * 10)                             // Multiplier chaque nombre par 10
-)
-.subscribe(value => console.log(value));       // Consommer les valeurs transformées
-                                                // Avant l'appel à subscribe, rien ne se passe !
-// Sortie attendue :
-// 20
-// 40</code></pre>
-        </section>
 
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>RxJS — Fonctions les plus utilisées</h3>
-
-          <table class="compact-table">
-            <colgroup>
-              <col style="width: 10%" />
-              <col style="width: 10%" />
-              <col style="width: 40%" />
-              <col style="width: 40%" />
-            </colgroup>
-
-            <thead>
-              <tr>
-                <th>Fonction</th>
-                <th>Catégorie</th>
-                <th>Rôle</th>
-                <th>Exemple</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>of</td>
-                <td>Creation</td>
-                <td>Créer un observable à partir de valeurs</td>
-                <td>
-                  <pre><code class="language-ts">of(1, 2, 3)</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>from</td>
-                <td>Creation</td>
-                <td>Créer un observable depuis un tableau ou une promesse</td>
-                <td>
-                  <pre><code class="language-ts">from([10, 20, 30])</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>map</td>
-                <td>Transformation</td>
-                <td>Transformer les valeurs</td>
-                <td>
-                  <pre><code class="language-ts">map(x => x * 2)</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>filter</td>
-                <td>Filtering</td>
-                <td>Filtrer les valeurs</td>
-                <td>
-                  <pre><code class="language-ts">filter(x => x > 10)</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>tap</td>
-                <td>Utility / Side effects</td>
-                <td>Effets de bord (logs, debug)</td>
-                <td>
-                  <pre><code class="language-ts">tap(value => console.log(value))</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>switchMap</td>
-                <td>Transformation</td>
-                <td>Changer de flux (HTTP, recherche)</td>
-                <td>
-                  <pre><code class="language-ts">switchMap(v => this.service.search(v))</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>forkJoin</td>
-                <td>Combination</td>
-                <td>
-                  Appeler plusieurs WS en parallèle et attendre tous les
-                  résultats
-                </td>
-                <td>
-                  <pre><code class="language-ts">forkJoin([this.wsA(), this.wsB()])</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>subscribe</td>
-                <td>Subscription</td>
-                <td>Démarrer l'exécution et consommer les valeurs</td>
-                <td>
-                  <pre><code class="language-ts">subscribe(value => console.log(value))</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>unsubscribe</td>
-                <td>Subscription</td>
-                <td>Arrêter l'exécution et libérer les ressources</td>
-                <td>
-                  <pre><code class="language-ts">subscription.unsubscribe()</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>takeUntil</td>
-                <td>Subscription</td>
-                <td>
-                  Se désabonner automatiquement à la réception d'un signal
-                </td>
-                <td>
-                  <pre><code class="language-ts">takeUntil(this.destroy$)</code></pre>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Cas d'utilisation — HTTP</h3>
-
-          <p>En Angular, les appels HTTP retournent des observables</p>
-
-          <pre><code class="language-ts">
-@Injectable({ providedIn: 'root' })
-export class UserService {
-  constructor(private http: HttpClient) {}
-
-  getUsers() {
-    return this.http.get&lt;User[]&gt;('/api/users');
-  }
-}
-  </code></pre>
-
-          <pre><code class="language-ts">// Dans un composant ou un autre service
-this.userService.getUsers().subscribe(users => {
-  this.users = users;
-});
-  </code></pre>
-          <ul>
-            <li>L'appel HTTP n'est effectué qu'à l'abonnement (subscribe)</li>
             <li>
-              Complete automatique après la première valeur (pas de fuite
-              mémoire)
+              Le composant ListePersonnesAvecService va récupérer cette liste et
+              l’afficher.
             </li>
-          </ul>
-        </section>
 
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Exemple 1: Appels en parallèle</h3>
-          <p>
-            J'appelle 2 WS en parallèle et j'attends les 2 résultats avant de
-            continuer : forkJoin
-          </p>
-          <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
-export class UserService {
-  private http = inject(HttpClient);
-
-  getContratsEtFactures(userId: number) {
-    return forkJoin({
-      contracts: this.http.get&lt;Contract[]&gt;(`/api/contracts?userId=${userId}`),
-      invoices: this.http.get&lt;Invoice[]&gt;(`/api/invoices?userId=${userId}`)
-    });
-  }
-}</code></pre>
-
-          <pre><code class="language-ts">this.userService.getContratsEtFactures(123).subscribe(({ contracts, invoices }) => {
-  this.contracts = contracts;
-  this.invoices = invoices;
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Exemple 2: Appels en séquentiel</h3>
-          <p>
-            J'appelle un WS et le resultat de l'appel sert à appeler 2 WS en
-            parallèle
-          </p>
-          <pre><code class="language-ts">@Injectable({ providedIn: 'root' })
-export class UserService {
-  private http = inject(HttpClient);
-
-  getInvoices(username: string) {
-    return this.http.get&lt;User&gt;(`/api/users?name=${username}`).pipe(
-      switchMap(user =>this.http.get&lt;Invoice[]&gt;(`/api/invoices?userId=${user.id}`))
-    );
-  }
-}</code></pre>
-
-          <pre><code class="language-ts">this.userService.getInvoices('John').subscribe(invoices => {
-  this.invoices = invoices;
-});</code></pre>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.8"
-        >
-          <h3>Finalement c'est pas si dur ?</h3>
-          <p>
-            Exemple: j'appelle un WS et le resultat de l'appel sert à appeler 2
-            WS en parallèle + j'ai des filtres + du logging + du mapping + des
-            erreurs
-          </p>
-
-          <div class="col-2">
-            <pre
-              style="height: 650px"
-            ><code class="language-ts" data-line-numbers="5-31">@Injectable({ providedIn: 'root' })
-export class UserService {
-  private http = inject(HttpClient);
-
-  getDashboard(username: string) {
-    return this.http.get&lt;User&gt;(`/api/users?name=${username}`).pipe(
-      tap(user =&gt; console.log('[User]', user)),
-      filter(user =&gt; user.active === true),
-      switchMap(user =&gt;
-        forkJoin({
-          contracts: this.http.get&lt;Contract[]&gt;(`/api/contracts?userId=${user.id}`),
-          invoices: this.http.get&lt;Invoice[]&gt;(`/api/invoices?userId=${user.id}`)
-        }).pipe(
-          tap(({ contracts, invoices }) =&gt; console.log('[Raw]', { contracts, invoices })),
-          map(({ contracts, invoices }) =&gt; ({
-            userId: user.id,
-            username: user.name,
-            contractsCount: contracts.length,
-            unpaidInvoices: invoices.filter(i =&gt; i.status === 'UNPAID'),
-            totalUnpaid: invoices
-              .filter(i =&gt; i.status === 'UNPAID')
-              .reduce((sum, i) =&gt; sum + i.amount, 0)
-          }))
-        )
-      ),
-      catchError(err =&gt; {
-        console.error('[Dashboard error]', err);
-        return throwError(() =&gt; new Error('Impossible de charger le dashboard'));
-      })
-    );
-  }
-}</code></pre>
-
-            <pre><code class="language-ts">// Dans un composant ou un autre service
-              
-              
-              
-              
-              
-              
-              
-              
-              
-this.userService.getDashboard('John').subscribe({
-  next: dashboard =&gt; {
-    this.dashboard = dashboard;
-  },
-  error: err =&gt; {
-    this.errorMessage = err.message;
-  }
-});
-
-// Et du coup si ca marche pas, on fait quoi ?
-// Les premieres fois très concrètement : mouchoir 
-
-
-
-</code></pre>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Service HTTP : Observable</h2>
-          <pre
-            style="height: 550px"
-          ><code class="language-ts">import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-export type User = { id: number; name: string };
-
-@Injectable({ providedIn: 'root' })
-export class UsersApi {
-  private http = inject(HttpClient);
-
-  // un GET
-  list(): Observable&lt;User[]&gt; {
-    return this.http.get&lt;User[]&gt;('/api/users');
-  }
-
-  // un POST
-  create(user: Partial&lt;User&gt;): Observable&lt;User&gt; {
-    return this.http.post&lt;User&gt;('/api/users', user);
-  }
-
-  // un DELETE
-  delete(userId: number): Observable&lt;void&gt; {
-    return this.http.delete&lt;void&gt;(`/api/users/${userId}`);
-  }
-
-  // etc
-}</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Lien avec le composant en Angular 21</h2>
-          <p>Le mieux c'est d'utiliser les interop Signals / Observables</p>
-
-          <pre><code class="language-ts" data-line-numbers="11">@Component({
-  selector: 'app-root',
-  template: `
-    @for (user of users(); track user.id) {
-      {{ user.name }}
-    }
-  `
-})
-export class AppComponent {
-  private api = inject(UsersApi);
-  users = toSignal(this.api.list(), { initialValue: [] }); // transformation Observable → Signal
-}</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Interop : Signal → Observable (toObservable)</h2>
-          <p>
-            Utile quand tu veux réutiliser un flux RxJS (operators) à partir
-            d'un signal
-          </p>
-          <pre><code class="language-ts" data-line-numbers="13">@Component({
-  selector: 'app-search',
-  standalone: true,
-  template: `
-    <input [value]="term()" (input)="term.set(($event.target as HTMLInputElement).value)" />
-    <p>Résultats : {{ results().length }}</p>
-  `
-})
-export class SearchComponent {
-  private api = inject(SearchApi);
-
-  term = signal('');
-  private term$ = toObservable(this.term);
-
-  results = toSignal(this.api.search(this.term$), { initialValue: [] });
-}</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
-            Services - Intercepteur
-          </h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="8" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.9"
-        >
-          <h2>Intercepteur HTTP</h2>
-          <ul>
             <li>
-              Intercepte les requêtes HTTP sortantes et les réponses entrantes
+              Ajouter un bouton « gommer > 33 » permettant de supprimer les
+              personnes de plus de 33 ans.
             </li>
-            <ul>
-              <li>Ajouter des en-têtes (auth, logs)</li>
-              <li>Gérer les erreurs globales</li>
-              <li>Modifier les réponses (caching, transformation)</li>
-            </ul>
-            <li>Fonctionne comme un middleware</li>
-            <ul>
-              <li>req represente la requête HTTP entrante (readonly)</li>
-              <li>
-                next sert a passer la requête au prochain intercepteur ou au
-                backend
-              </li>
-            </ul>
-          </ul>
-          <pre><code class="language-ts">// mon-super-intercepteur.ts
-export function monSuperIntercepteur(req: HttpRequest&lt;unknown&gt;,next: HttpHandlerFn): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
-// On peut modifier la requête ici
-  return next(req).pipe(
-    tap((event) => { /* On peut inspecter ou modifier la réponse ici */ }),
-  );
-}</code></pre>
 
-          <pre><code class="language-ts">
-//main.ts
-bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(withInterceptors([monSuperIntercepteur]))],
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Intercepteur HTTP: Exemple 1</h2>
-          <p>Modifier la requête avant qu'elle soit envoyée</p>
-          <pre><code class="language-ts">export function authInterceptor(req: HttpRequest&lt;unknown&gt;, next: HttpHandlerFn) {
-  const authToken = inject(AuthService).getAuthToken();
-  const newReq = req.clone({ headers: req.headers.append('X-Authentication-Token', authToken) });
-  return next(newReq);
-}
-          </code></pre>
-          <ul>
             <li>
-              Possibilité d'injecter des services
-              <br />(Mais pas partout, il faut être dans un contexte
-              d'injection)
+              Rien ne se passe : c’est normal, vous n’avez pas utilisé de
+              signal. Tout passer en signal.
             </li>
-            <li>Pour modifier la requête, il faut la cloner (immutable)</li>
-          </ul>
-        </section>
 
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Intercepteur HTTP: Exemple 2</h2>
-          <p>Agir sur la reponse</p>
-          <pre><code class="language-ts">export function loggingInterceptor(req: HttpRequest&lt;unknown&gt;, next: HttpHandlerFn) {
-  console.log('Request sent:', req);
-  return next(req).pipe(
-    tap((event) => {
-        if (event instanceof HttpResponse) {
-          console.log('Response received:', event);
-        }
-      }
-    ),
-  );</code></pre>
-          <ul>
-            <li>Utile pour le logging ou le debugging</li>
-            <li>Ne pas modifier la réponse directement</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>TP12</h2>
-          <ul>
-            <li>intercepteur HTTP</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Routage</h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="9" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>C'est quoi ?</h2>
-          <p>
-            Le routeur Angular permet de gérer la navigation entre différentes
-            vues (composants) dans une application SPA
-            <br />Une route est un objet qui décrit quoi afficher pour un chemin
-            d'URL
-          </p>
-          <ul>
-            <li style="color: rgb(126, 125, 125)">
-              Rappel: SPA = Single Page Application = une seule page html
-            </li>
-            <li>Encore un concept bien puissant :</li>
-            <ul>
-              <li>Routage de composant</li>
-              <li>Sous-routes : insertion de composant dans un autre</li>
-              <li>Lazy loading : chargement à la demande</li>
-              <li>Paramètres dans l'URL</li>
-              <li>Controle d'accès (guards)</li>
-              <li>Chargement de données avant l'affichage (resolvers)</li>
-            </ul>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Déclarer des routes</h3>
-          <p>Dans des fichiers *.routes.ts (ex: app.routes.ts)</p>
-
-          <pre><code class="language-ts">// app.routes.ts
-import { Routes } from '@angular/router';
-import { HomePage } from './home/home-page';
-import { AdminPage } from './admin/admin-page';
-
-export const routes: Routes = [
-  { path: '', component: HomePage },
-  { path: 'admin', component: AdminPage },
-  { path: 'user', component: UserPage },
-];</code></pre>
-
-          <ul>
-            <li>Visiter / affiche HomePage</li>
-            <li>Visiter /admin affiche AdminPage</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Brancher le router</h3>
-          <p>Avec provideRouter(routes) au bootstrap</p>
-
-          <pre><code class="language-ts">import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { routes } from './app.routes';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes),
-  ],
-};</code></pre>
-
-          <ul>
             <li>
-              On peut (et doit pour une vrai application) avoir plusieurs
-              fichiers de routes
+              Créer un composant DetailPersonneAvecService et l’afficher dans
+              une carte
             </li>
+
             <li>
-              Mais ici on en importe tjs un seul, qui regroupe toutes les routes
+              Ajouter un bouton « Voir » à la fin de chaque ligne dans
+              ListePersonnesAvecService.
             </li>
+
             <li>
-              Il faut voir ca comme un arbre de routes, a coté des composants et
-              services
+              Au clic sur « Voir », la personne sélectionnée est stockée dans le
+              service PersonneService.
             </li>
-          </ul>
-        </section>
 
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Naviguer dans l'application (1)</h3>
-          <p>Avec la directive routerLink dans les templates</p>
-          <pre><code class="language-ts">&lt;a [routerLink]="['/user', userId()]"&gt;Voir le profil&lt;/a&gt; // Property binding</code></pre>
-          <pre><code class="language-ts">&lt;a routerLink="/admin"&gt;Aller à l'admin&lt;/a&gt; // Lien statique</code></pre>
-          <ul>
             <li>
-              Le tableau passé à routerLink est concaténé pour former le path
-            </li>
-            <li>Utile pour les routes avec paramètres (ex: /user/123)</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Naviguer dans l'application (2)</h3>
-          <p>Avec le service Router dans le code TypeScript</p>
-          <pre><code class="language-ts" data-line-numbers="5-9">import { Router } from '@angular/router';
-
-@Component({ selector: 'app-some', template: `` })
-export class SomeComponent {
-  private router = inject(Router);
-
-  goToUserProfile(userId: string) {
-    this.router.navigate(['/user', userId]);
-  }
-}</code></pre>
-          <ul>
-            <li>
-              Utile pour naviguer en réponse à une action utilisateur (ex:
-              bouton)
-            </li>
-            <li>
-              Permet de construire dynamiquement le chemin (avec paramètres)
+              Le composant DetailPersonneAvecService affiche cette personne.
             </li>
           </ul>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.9"
-        >
-          <h3>Route params : URL dynamiques</h3>
-          <p>Paramètres avec <code>:</code> (ex: <code>user/:id</code>)</p>
-
-          <pre><code class="language-ts" data-line-numbers="5">import { Routes } from '@angular/router';
-import { UserProfile } from './user-profile/user-profile';
-
-export const routes: Routes = [
-  { path: 'user/:id', component: UserProfile }, // Exemples : /user/leeroy, /user/jenkins
-];</code></pre>
-
-          <pre><code class="language-ts" data-line-numbers="4-9">// Dans UserProfile component
-@Component({ selector: 'app-user-profile', template: ``})
-export class UserProfile {
-  // Option 1: avec snapshot (ne réagit pas aux changements de paramètre)
-  userId = toSignal(inject(ActivatedRoute).params.pipe(map(params =&gt; params['id'])));
-
-  // Option 2: avec withComponentInputBinding
-  // il faut mettre provideRouter(appRoutes, withComponentInputBinding()) dans main.ts
-  id = input();
-}</code></pre>
-
-          <ul>
-            <li>
-              Permet de créer des routes dynamiques (ex: profil utilisateur,
-              détails produit)
-            </li>
-            <li>
-              Récupération des paramètres via ActivatedRoute ou
-              withComponentInputBinding
-            </li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Ordre des routes : “first match wins”</h3>
-          <p>
-            Le router prend la première route qui match : la spécificité compte
-          </p>
-
-          <pre><code class="language-ts">export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'toto', redirectTo: '' },                        // redirige /toto vers /
-  { path: 'users/new', component: NewUserComponent },      // route spécifique (priorité sur users/:id)
-  { path: 'users/:id', component: UserDetailComponent },
-  { path: 'users', component: UsersComponent },
-  { path: '**', component: NotFoundComponent },            // match tout le reste
-];</code></pre>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.93"
-        >
-          <h3>Routes avancées : children</h3>
-          <div class="col-2">
-            <pre><code class="language-ts">export const routes: Routes = [
-  {
-    path: 'product',
-    component: ProductComponent,
-    children: [
-      { path: 'info', component: ProductInfoComponent },
-      { path: 'reviews', component: ProductReviewsComponent },
-    ],
-  },
-];</code></pre>
-
-            <pre><code class="language-ts" data-line-numbers="7">
-// Dans product.component.ts
-@Component({
-  selector: 'app-product',
-  template: `
-    &lt;h2&gt;Product Details&lt;/h2&gt;
-    &lt;router-outlet&gt;&lt;/router-outlet&gt;
-  `
-})
-</code></pre>
-          </div>
-
-          <ul>
-            <li>
-              Les routes enfants sont des routes qui s'appliquent à un composant
-              parent
-            </li>
-            <li>
-              Le composant parent doit contenir un &lt;router-outlet&gt; pour
-              afficher les enfants
-            </li>
-            <li>Permet de controler des vues imbriquées</li>
-            <li>
-              Ici /product/info affiche ProductInfoComponent dans
-              ProductComponent
-            </li>
-          </ul>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.93"
-        >
-          <h3>Routes avancées : children</h3>
-          <div class="col-2">
-            <pre><code class="language-ts">// app.routes.ts
-export const routes: Routes = [
-  {
-    path: 'product',
-    component: ProductComponent,
-    loadChildren: () => import('./product/product.routes').then(m =&gt; m.productRoutes)
-  },
-];</code></pre>
-
-            <pre><code class="language-ts" data-line-numbers="7">// product.routes.ts
-export const productRoutes: Routes = [
-  { path: 'info', component: ProductInfoComponent },
-  { path: 'reviews', component: ProductReviewsComponent },
-];
-</code></pre>
-          </div>
-
-          <ul>
-            <li>Permet de découper les routes dans plusieurs fichiers</li>
-            <li>
-              Utile pour les routes avec beaucoup d'enfants ou des domaines
-              fonctionnels distincts
-            </li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Chargement : eager vs lazy</h3>
-          <p>
-            component = eager (bundle initial), loadComponent = lazy (import
-            dynamique)
-          </p>
-
-          <pre><code class="language-ts">export const routes: Routes = [
-  { path: 'main', loadComponent: () => import('./main/main-page').then(m => m.MainPage) },
-  { path: 'login', component: LoginPage},
-  { path: 'admin', loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes) },
-];</code></pre>
-
-          <p>
-            On ne veut pas charger tout le code de l'application au démarrage
-            (avant authentitication de l'utilisateur par exemple)
-          </p>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
-            Routage - Control d'accès
-          </h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="10" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Guards</h2>
-          <p>
-            Les guards sont des fonctions qui permettent de contrôler l'accès
-            aux routes
-            <a
-              href="https://angular.dev/guide/routing/route-guards#route-guard-return-types"
-              >voir ici</a
-            >
-          </p>
-          <ul>
-            <li>Implémentent la logique d'autorisation</li>
-            <li>Décident si une route peut être activée ou non</li>
-            <li>
-              Utilisent l'injection de dépendances pour accéder aux services
-            </li>
-          </ul>
-          <pre><code class="language-ts">export function authGuard(): CanActivateFn {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-  return authService.isLoggedIn() ? true : router.parseUrl('/login');
-}</code></pre>
-          <pre><code class="language-ts">export const routes: Routes = [
-  { path: 'admin', canActivate: [authGuard] },
-  { path: 'login', component: LoginPage },
-];</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Directives</h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="11" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Pipes</h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="12" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Form</h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="13" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Formulaire</h2>
-          <blockquote>
-            "L'élément HTML form représente une section du document contenant
-            des contrôles interactifs permettant de soumettre des informations."
-            <a
-              href="https://developer.mozilla.org/fr/docs/Web/HTML/Reference/Elements/form"
-              >*</a
-            >
-          </blockquote>
-
-          <ul>
-            <li>Saisie utilisateur structurée</li>
-            <li>Validation côté client</li>
-            <li>Gestion de l'état (valide, invalide, touched, dirty)</li>
-            <li>Intégration forte avec TypeScript</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Les deux approches Angular</h3>
-          <ul>
-            <li>Template-driven forms</li>
-            <li>Reactive forms</li>
-          </ul>
-
-          <p>
-            En contexte professionnel, on privilégie Reactive Forms
-            <br />(en tout cas chez nous !)
-          </p>
-
-          <ul>
-            <li>Code plus explicite</li>
-            <li>Meilleure testabilité</li>
-            <li>Logique côté TypeScript</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Qu'est-ce qu'un Reactive Form ?</h3>
-          <p>
-            Un Reactive Form est défini entièrement en TypeScript à l'aide
-            d'objets immuables représentant l'état du formulaire.
-          </p>
-
-          <ul>
-            <li>FormControl : un champ</li>
-            <li>FormGroup : un formulaire</li>
-            <li>FormArray : une liste dynamique de champs</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Créer un FormControl</h3>
-          <p>Un champ avec une valeur initiale et des validateurs</p>
-
-          <pre><code class="language-ts">import { FormControl, Validators } from '@angular/forms';
-
-const emailControl = new FormControl('', [
-  Validators.required,
-  Validators.email,
-]);</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Créer un FormGroup</h3>
-          <p>Un formulaire composé de plusieurs champs</p>
-
-          <pre><code class="language-ts">import { FormGroup, FormControl, Validators } from '@angular/forms';
-
-const loginForm = new FormGroup({
-  email: new FormControl('', [Validators.required, Validators.email]),
-  password: new FormControl('', Validators.required),
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Lier le formulaire au template</h3>
-          <p>Connexion entre TypeScript et HTML</p>
-
-          <pre><code class="language-html">&lt;form [formGroup]="loginForm"&gt;
-  &lt;input type="email" formControlName="email"&gt;
-  &lt;input type="password" formControlName="password"&gt;
-&lt;/form&gt;</code></pre>
-
-          <ul>
-            <li>Utilisation de formGroup pour lier le formulaire</li>
-            <li>Utilisation de formControlName pour chaque champ</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Lire l'état du formulaire</h3>
-          <p>Chaque champ expose son état</p>
-
-          <table class="compact-table">
-            <colgroup>
-              <col style="width: 10%" />
-              <col style="width: 40%" />
-              <col style="width: 40%" />
-            </colgroup>
-
-            <thead>
-              <tr>
-                <th>Propriété</th>
-                <th>Signification</th>
-                <th>Exemple</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>valid</td>
-                <td>valide ou non</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.valid</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>invalid</td>
-                <td>invalide ou non</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.invalid</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>touched</td>
-                <td>touché ou non</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.controls.email.touched</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>untouched</td>
-                <td>non touché</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.controls.email.untouched</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>dirty</td>
-                <td>modifié ou non</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.controls.email.dirty</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>pristine</td>
-                <td>non modifié</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.controls.email.pristine</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>errors</td>
-                <td>objet contenant les erreurs de validation</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.controls.email.errors</code></pre>
-                </td>
-              </tr>
-
-              <tr>
-                <td>value</td>
-                <td>valeur actuelle du champ ou du formulaire</td>
-                <td>
-                  <pre><code class="language-ts">this.loginForm.value</code></pre>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Validation des formulaires</h3>
-
-          <ul>
-            <li>Validators intégrés Angular</li>
-            <ul>
-              <li>required</li>
-              <li>minLength / maxLength</li>
-              <li>email</li>
-              <li>pattern</li>
-            </ul>
-            <li>Possibilité de créer des validateurs personnalisés</li>
-          </ul>
-
-          <pre><code class="language-ts">password: new FormControl('', [
-  Validators.required,
-  Validators.minLength(8),
-]);</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Réagir aux changements</h3>
-          <p>Les formulaires exposent des observables RxJS</p>
-
-          <pre><code class="language-ts">this.loginForm.valueChanges.subscribe(value => {
-  console.log(value);
-});
-
-this.loginForm.statusChanges.subscribe(status => {
-  console.log(status);
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Soumettre un formulaire</h3>
-
-          <pre><code class="language-ts">onSubmit() {
-  if (this.loginForm.valid) {
-    console.log(this.loginForm.value);
-  }
-}</code></pre>
-
-          <pre><code class="language-html">&lt;form [formGroup]="loginForm" (ngSubmit)="onSubmit()"&gt;
-&lt;/form&gt;</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
-            Angular material
-          </h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="14" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Angular Material</h2>
-          <ul>
-            <li>
-              Une lib crée et maintenu par l'équipe Angular (Voir
-              <a href="https://material.angular.dev/components/categories"
-                >ici</a
-              >)
-            </li>
-            <li>Plusieurs aspects présent</li>
-            <ul>
-              <li>Bibliothèque de composant haut niveau prêts à l'emploi</li>
-              <ul>
-                <li>Implémentation du design system material</li>
-              </ul>
-              <li>
-                Un CDK (=des API plutôt bas niveau) pour construire et tester
-                des composants
-              </li>
-            </ul>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Pourquoi Angular Material ?</h3>
-
-          <ul>
-            <li>Concernant les composants haut niveau</li>
-            <ul>
-              <li>Gagner du temps sur l'UI</li>
-              <li>Bon niveau d'accessibilité (a11y)</li>
-              <li>Marche sur tout les navigateurs</li>
-            </ul>
-            <li>Concernant le CDK</li>
-            <ul>
-              <li>Top quand on a un design system imposé</li>
-              <li>Briques techniques sans design imposé</li>
-              <li>Gestion du focus, clavier et accessibilité</li>
-              <li>Test Harness pour des tests robustes et maintenables</li>
-            </ul>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Installation</h3>
-
-          <pre><code class="language-bash">ng add @angular/material</code></pre>
-
-          <img src="../assets/material.png" alt="" />
-          <p>
-            Ici j'ai choisi Azure/Blue, il y en a plusieurs existant avec la
-            possibilité custom des éléments (Voir
-            <a href="https://material.angular.dev/guide/theming">ici</a>)
-          </p>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Premier exemple</h3>
-
-          <pre><code class="language-ts">@Component({
-  standalone: true,
-  imports: [MatButtonModule],
-  template: `<button mat-raised-button>OK</button>`
-})
-export class ExampleComponent {}</code></pre>
-
-          <ul>
-            <li>Pas oublié d'importer le composant</li>
-            <li>Via son module (vestige des anciennes versions)</li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Composants Angular Material les plus utilisés</h3>
-
-          <table class="compact-table">
-            <thead>
-              <tr>
-                <th>Composant</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>MatButton</td>
-                <td>
-                  Boutons Material (primary, accent, warn, actions utilisateur)
-                </td>
-              </tr>
-              <tr>
-                <td>MatInput</td>
-                <td>Champ de saisie texte intégré aux formulaires</td>
-              </tr>
-              <tr>
-                <td>MatFormField</td>
-                <td>
-                  Conteneur de champs avec label, erreurs et accessibilité
-                </td>
-              </tr>
-              <tr>
-                <td>MatIcon</td>
-                <td>Affichage d’icônes Material</td>
-              </tr>
-              <tr>
-                <td>MatDialog</td>
-                <td>Fenêtres modales (confirmation, formulaire, alerte)</td>
-              </tr>
-              <tr>
-                <td>MatTable</td>
-                <td>Tableaux de données avec tri, pagination et filtres</td>
-              </tr>
-              <tr>
-                <td>MatSnackBar</td>
-                <td>Messages temporaires de notification</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Angular Material + Reactive Forms</h3>
-
-          <pre style="height: 600px"><code class="language-html">@Component({
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
-  template: `
-    &lt;form [formGroup]="form" (ngSubmit)="submit()"&gt;
-      &lt;mat-form-field&gt;
-        &lt;mat-label&gt;Email&lt;/mat-label&gt;
-        &lt;input matInput type="email" formControlName="email"/&gt;
-      &lt;/mat-form-field&gt;
-
-      &lt;button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"&gt;
-        Envoyer
-      &lt;/button&gt;
-    &lt;/form&gt;
-  `
-})
-export class ExampleComponent {
-  form = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ])
-  });
-
-  submit() {
-    console.log(this.form.value);
-  }
-}</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
-            Angular (avant Angular 16 & 21)
-          </h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="15" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h2>Angular (avant Angular 16 & 21)</h2>
-
-          <ul>
-            <li>Architecture basée sur NgModules</li>
-            <ul>
-              <li>Pas de standalone components</li>
-            </ul>
-            <li>Pas de signals</li>
-            <ul>
-              <li>Change detection avec zonejs</li>
-            </ul>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Architecture centrale : NgModules</h3>
-
-          <p>Toute application Angular était organisée autour des modules</p>
-          <ul>
-            <li>Déclarer les composants, directives, pipes</li>
-            <li>Gérer les imports</li>
-            <li>Gérer les exports</li>
-            <li>Gérer l'injection de dépendances</li>
-          </ul>
-          <img
-            src="../assets/archi_angular_old.png"
-            alt=""
-            style="height: 400px"
-          />
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Les modules</h3>
-
-          <p>Les composants doivent être déclarés dans un module.</p>
-
-          <div class="col-2">
-            <pre><code class="language-ts">@Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html'
-})
-export class HomeComponent {
-  title = 'Home';
-
-}</code></pre>
-
-            <pre><code class="language-ts">@NgModule({
-  declarations: [HomeComponent], // Il faut declarer tout les composants du module 
-  imports: [
-    CommonModule
-  ],
-  providers: [
-    HomeService,                 // Provider disponible pour et que pour module
-  ],
-  exports: [HomeComponent]       // Et choisir ceux qu'on exporte en dehors du module 
-})
-export class HomeModule {}</code></pre>
-          </div>
-
-          <ul>
-            <li>Impossible de les utiliser sans les déclarer dans un Module</li>
-            <li>
-              Pour le moment il y a encore la notions de modules dans les
-              <span class="kiki">tests</span>
-            </li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Pas de Signals, pas d'inject</h3>
-
-          <p>Tout repose sur RxJS: il y en a partout</p>
-
-          <div class="col-2">
-            <pre><code class="language-ts">@Component({
-  selector: 'app-home',
-  template: `<h1>{{titre | async}}</h1>`
-})
-export class HomeComponent {
-  titre: Observable&lt;string&gt;;
-
-  constructor(private homeService: HomeService){}
-
-}</code></pre>
-            <pre><code class="language-ts">@Component({
-  selector: 'app-home',
-  template: `<h1>{{titre}}</h1>`
-})
-export class HomeComponent {
-  titre: string;
-
-  constructor(private homeService: HomeService){
-    homeService.getTitle()
-      .pipe(takeUntilDestroyed())  // sinon fuite mémoire, l'observable est pas kill
-      .subscribe(titre => this.titre2 = titre);
-  }
-
-}</code></pre>
-          </div>
-
-          <ul>
-            <li>
-              Méthode 1 avec le pipe async : gérer tout seul le kill de
-              l'observable
-            </li>
-            <li>
-              Méthode 2 subscribe dans le composant: il faut faire attention au
-              fuite mémoire
-            </li>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Change Detection classique</h3>
-
-          <p>Angular détecte les changements automatiquement via la zone.js</p>
-
-          <ul>
-            <li>Change detection globale</li>
-            <li>Déclenchée par événements, timers, HTTP</li>
-            <li>Peut être coûteuse sur de grosses apps</li>
-          </ul>
-          <p class="col-2" style="justify-content: space-around">
-            <img src="../assets/zone.png" alt="" style="height: 300px" />
-            <img
-              src="../assets/archi-signal.png"
-              alt=""
-              style="height: 300px"
-            />
-          </p>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>RxJS partout</h3>
-
-          <p>RxJS est la pierre angulaire pour :</p>
-
-          <ul>
-            <li>HTTP</li>
-            <li>Formulaires (valueChanges)</li>
-            <li>Communication entre composants</li>
-            <li>Gestion d'état avancée</li>
-          </ul>
-
-          <pre><code class="language-ts">this.http.get('/api/users')
-  .subscribe(users => this.users = users);</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Limites et à retenir</h3>
-
-          <ul>
-            <li>Pourquoi ca a évolué ?</li>
-            <ul>
-              <li>Beaucoup de boilerplate</li>
-              <li>NgModules complexes à maintenir</li>
-              <li>Change detection parfois coûteuse</li>
-              <li>Montée en complexité sur gros projets</li>
-            </ul>
-            <li>A retenir</li>
-            <ul>
-              <li>Angular 16 (standalone) et 21 (signals)</li>
-              <li>Encore beaucoup utilisée</li>
-              <li>Mécanisme de module utilisé dans les tests</li>
-            </ul>
-          </ul>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">Tests Angular</h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="16" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Pourquoi tester ?</h3>
-          <ul>
-            <li>Détecter les bugs tôt</li>
-            <li>Documenter le comportement attendu</li>
-            <li>Refactorer sans peur</li>
-            <li>Améliorer la qualité (contrats clairs)</li>
-          </ul>
-          <p>
-            Ca peut sembler évider mais quand l'application grossi, c'est hyper
-            utile de savoir tout les cas possible des composants
-          </p>
-          <p class="difficulty-of-death-lite">
-            C'est un des endroits ou il faut être le plus rigoureux
-          </p>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.95"
-        >
-          <h3>Approches et type de tests</h3>
-          <p>La question est de savoir évaluer le rapport coût/qualité</p>
-          <div class="col-2" style="justify-content: space-around">
-            <img src="../assets/pyramide-tests.png" style="height: 300px" />
-            <img src="../assets/trophy-tests.png" style="height: 300px" />
-          </div>
-          <table class="compact-table">
-            <tbody>
-              <tr>
-                <td><strong>Tests statiques</strong></td>
-                <td>
-                  Analyser le code sans l’exécuter (Type checking, formatage,
-                  linting)
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Tests unitaires</strong></td>
-                <td>Tester un composant ou une fonction isolée</td>
-              </tr>
-              <tr>
-                <td><strong>Tests d’intégration</strong></td>
-                <td>
-                  Vérifier le fonctionnement de plusieurs composants ensemble
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Tests end-to-end (E2E)</strong></td>
-                <td>Simuler un parcours utilisateur complet</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Stack par défaut (Angular CLI)</h3>
-          <ul>
-            <li>
-              Runner de tests : Vitest (par défaut sur les nouveaux projets)
-            </li>
-            <li>API d'assertions : expect</li>
-            <li>Mocks / spies : vi.fn(), vi.spyOn()</li>
-            <li>Environnement DOM : jsdom</li>
-          </ul>
-
-          <pre><code class="language-bash">ng test</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Structure d'un test</h3>
-
-          <ul>
-            <li>describe = un ensemble de test</li>
-            <li>it = un test = une intention clair de test</li>
-            <li>
-              expect = une assertion = je m'attend a ce que j'ai ceci ou cela
-            </li>
-            <li>Optionnel : structurer en given, when, then</li>
-          </ul>
-
-          <pre><code class="language-ts">describe('sum', () => {
-  it('should be 5 when 2 is added to 3', () => {
-    // Given
-    const a = 2;
-    const b = 3;
-
-    // When
-    const result = a + b;
-
-    // Then
-    expect(result).toBe(5);
-  });
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>TestBed : le "container" de tests Angular</h3>
-          <p>
-            TestBed permet de configurer un module de test : providers, imports,
-            composants<br />(C'est pour ca qu'il faut savoir ce qu'est un
-            module)
-          </p>
-
-          <pre><code class="language-ts">beforeEach(() => {
-  TestBed.configureTestingModule({
-    providers: [],
-    imports: [],
-  });
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Tester un service (DI + mocks)</h3>
-
-          <div class="col-2" style="height: 550px">
-            <pre><code class="language-ts">describe('UserService', () => {
-
-  function setup(loggerMock: Logger) {
-    await TestBed.configureTestingModule({
-      providers: [
-        { provide: Logger, useValue: loggerMock },
-      ],
-    });
-    return TestBed.inject(UserService)
-  }
-
-
-  it('logs when creating a user', () => {
-    // Given
-    const loggerMock = { log: vi.fn() };
-    const { facade } = setup(loggerMock);
-
-    // When
-    const user = facade.createUser('Alice');
-
-    // Then
-    expect(loggerMock.log).toHaveBeenCalledWith('create:Alice');
-  });
-});</code></pre>
-            <pre><code class="language-ts">class Logger {
-  log(_msg: string) {}
-}
-
-@Injectable({providedIn: 'root'})
-export class UserService {
-  logger = inject(Logger);
-  createUser(name: string) { this.logger.log(`create:${name}`); }
-}</code></pre>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Tester un service (DI + mocks)</h3>
-
-          <div class="col-2" style="height: 550px">
-            <pre
-              style="width: 1050px"
-            ><code class="language-ts">describe('UserService', () => {
-
-  function setup(loggerMock: Logger) {                  // fonction setup pour configurer l'environnement de test
-    await TestBed.configureTestingModule({              // (On peut aussi passer par un beforeEach
-      providers: [                                      // mais faudra déclarer des variables intermédiaires)
-        { provide: Logger, useValue: loggerMock },      // ici on inject le mock de Logger
-      ],
-    });
-    return TestBed.inject(UserService)                  // Et on créer le service sur la base de l'environnement de test 
-  }
-
-  it('logs when creating a user', () => {               // début du test
-    // Given
-    const loggerMock = { log: vi.fn() };                // Création du mock de logger avec vitest 
-    const { userService } = setup(loggerMock);          // Création du service à tester 
-
-    // When
-    const user = userService.createUser('Alice');       // Appel de la fonction testé
-
-    // Then
-    expect(loggerMock.log).toHaveBeenCalledWith('create:Alice');  // Assertions
-  });
-});</code></pre>
-          </div>
-        </section>
-
-        <section
-          data-background-image="../assets/fond-blanc.png"
-          style="zoom: 0.8"
-        >
-          <h3>Tester l'HTTP : HttpTestingController</h3>
-          <p>
-            On intercepte les requêtes et on "flush" une réponse mockée, sans
-            serveur réel
-          </p>
-
-          <pre
-            style="height: 750px"
-          ><code class="language-ts">@Injectable({providedIn: 'root'})
-class UserService {
-  private http = inject(HttpClient);
-  getUsers() { return this.http.get&lt;User[]&gt;('/api/users'); }
-}
-
-describe('UserService', () => {
-  let userService: UserService;               // Quand on utilise beforeEach il faut des var intermédiaires
-
-  beforeEach(async () => {
-     TestBed.configureTestingModule({
-      providers: [
-        UserService,
-        provideHttpClient(),                  // Comme dans main.ts il ce provide pour faire des appels HTTP 
-        provideHttpClientTesting(),           // + un service fourni par angular pour les tests HTTP
-      ],
-    });
-    userService = TestBed.inject(UserService);
-  });
-
-  it('mocks GET /api/users', () => {
-    const httpMock = TestBed.inject(HttpTestingController);  // service permettant les mock HTTP
-
-    let received: any;
-    api.getUsers().subscribe(data => received = data);
-
-    const req = httpMock.expectOne('/api/users');            // 
-    expect(req.request.method).toBe('GET');                  // Définition de ce que va retourner l'API
-    req.flush([{ id: 1, name: 'Alice' }]);                   //
-
-    expect(received[0].name).toBe('Alice');
-
-    httpMock.verify();                                       // A la fin on verifie que ca a bien été appelé
-  });
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Tester un composant : ComponentFixture</h3>
-          <p>
-            Un composant = classe + template : on teste l'intégration des 2 via
-            le DOM
-          </p>
-
-          <pre><code class="language-ts">@Component({selector: 'app-counter',
-  template: `
-    <p data-testid="value">{{ value() }}</p>
-    <button (click)="inc()">+</button>
-  `,
-})
-class CounterComponent {
-  value = signal(0);
-  inc() { this.value.update(v => v + 1); }
-}
-
-describe('CounterComponent', () => {
-  it('increments value on click', async () => {
-    await TestBed.configureTestingModule({
-      imports: [CounterComponent],
-    }).compileComponents();
-
-    const fixture = TestBed.createComponent(CounterComponent);
-    fixture.detectChanges();
-
-    const btn: HTMLButtonElement = fixture.nativeElement.querySelector('button');
-    btn.click();
-    fixture.detectChanges();
-
-    const valueEl: HTMLElement = fixture.nativeElement.querySelector('[data-testid="value"]');
-    expect(valueEl.textContent?.trim()).toBe('1');
-  });
-});</code></pre>
-        </section>
-
-        <section data-background-image="../assets/fond-bienvenue.png">
-          <h1 style="margin-top: 1.5em; margin-bottom: 0.8em">
-            Bravo et merci
-          </h1>
-          <div style="display: flex; justify-content: center; padding: 0">
-            <app-plan completed="18" style="font-size: 0.4em"></app-plan>
-          </div>
-        </section>
-
-        <section data-background-image="../assets/fond-blanc.png">
-          <h3>Bonne pratiques: organisation du dossier app/</h3>
-          <pre><code class="language-text">
-tp6
-...
-├─ src
-│  ├─ app
-│  │  ├─ core/                        // services singleton, logique transverse
-│  │  │  ├─ services/
-│  │  │  └─ guards/
-│  │  ├─ features/                    // domaines fonctionnels (lazy loading)
-│  │  │  └─ user/
-│  │  │     ├─ user.routes.ts
-│  │  │     └─ user.component.ts
-│  │  ├─ shared/                      // composants et utilitaires réutilisables
-│  │  │  ├─ components/
-│  │  │  └─ pipes/
-│  │  ├─ app.routes.ts                // routage principal 
-│  │  └─ app.component.ts             // composant racine  
-...
-  </code></pre>
         </section>
       </div>
     </div>

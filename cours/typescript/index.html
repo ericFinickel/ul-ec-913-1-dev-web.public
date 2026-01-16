@@ -963,14 +963,17 @@ npm install -D @types/lodash
             </ul>
             <li>
               Creer une classe db.process.ts qui travail avec des elements
-              possedant un id, cette classe n'a pas le droit de connaitre joueur
+              possedant un id. Cette classe n'a pas le droit de connaitre joueur
             </li>
             <ul>
-              <li>Indication: Les generiques sont vos amis</li>
+              <li>Indication: Utiliser les generiques</li>
             </ul>
             <li>
               serveur.ts n'a pas le droit de connaitre db.process.ts, il faut
-              une classe de process intermédiaire
+              une classe de process intermédiaire. joueur.process.ts par
+              exemple. C'est ce process qui va instancier et utiliser
+              db.process.ts. C'est aussi ce process qui met en place la logique
+              métier lié au concept de joueur.
             </li>
             <ul>
               <li>
