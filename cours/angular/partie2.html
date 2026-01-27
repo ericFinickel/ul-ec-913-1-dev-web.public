@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
@@ -82,7 +82,7 @@
 
               <ol>
                 <li>${mark(
-                  "Création premier projet, cli, structure, fichiers de conf"
+                  "Création premier projet, cli, structure, fichiers de conf",
                 )}</li>
 
                 <li>Composants
@@ -2130,11 +2130,38 @@ describe('CounterComponent', () => {
 });</code></pre>
         </section>
 
-        <section data-background-image="../assets/fond-blanc.png">
+        <section
+          data-background-image="../assets/fond-blanc.png"
+          style="zoom: 0.9"
+        >
           <h2>TP18</h2>
           <ul>
             <li>Tout tester</li>
-            <li>(nan j'rigole)</li>
+            <li>
+              Installer:
+              <pre><code>npm install --save-dev @vitest/browser-playwright playwright</code></pre>
+            </li>
+            <li>
+              Modifier dans angular.json
+              <pre><code>"test": {
+  "builder": "@angular/build:unit-test",
+  "options": {
+    "browsers": ["chromium"]
+  }
+}</code></pre>
+            </li>
+            <li>
+              Lancer:
+              <pre><code>npx playwright install</code></pre>
+            </li>
+            <li>
+              Tester:
+              <ul>
+                <li>DetailPersonneAvecService</li>
+                <li>PostService</li>
+                <li>ChiffreLePlusGrand</li>
+              </ul>
+            </li>
           </ul>
         </section>
 
